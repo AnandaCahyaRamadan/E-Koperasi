@@ -1,0 +1,268 @@
+/* E-Koperasi Visual Identity CSS */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --kop-primary: #16834A;
+    --kop-primary-hover: #126b3c;
+    --kop-primary-light: #e8f5ee;
+    --kop-yellow: #F5C542;
+    --kop-yellow-hover: #e5b32f;
+    --kop-bg: #F4F6F8;
+    --kop-dark: #252B33;
+    --kop-muted: #6c757d;
+    --kop-danger: #DC3545;
+    --kop-card-shadow: 0 4px 12px rgba(37, 43, 51, 0.05);
+    --kop-card-shadow-hover: 0 8px 24px rgba(22, 131, 74, 0.12);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--kop-bg);
+    color: var(--kop-dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Colors & Buttons */
+.bg-kop-primary {
+    background-color: var(--kop-primary) !important;
+}
+
+.text-kop-primary {
+    color: var(--kop-primary) !important;
+}
+
+.bg-kop-yellow {
+    background-color: var(--kop-yellow) !important;
+}
+
+.text-kop-yellow {
+    color: var(--kop-yellow) !important;
+}
+
+.bg-kop-light {
+    background-color: var(--kop-primary-light) !important;
+}
+
+.btn-kop-primary {
+    background-color: var(--kop-primary);
+    color: #ffffff;
+    border-color: var(--kop-primary);
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-kop-primary:hover, .btn-kop-primary:focus {
+    background-color: var(--kop-primary-hover);
+    border-color: var(--kop-primary-hover);
+    color: #ffffff;
+}
+
+.btn-kop-yellow {
+    background-color: var(--kop-yellow);
+    color: #252B33;
+    border-color: var(--kop-yellow);
+    font-weight: 600;
+}
+
+.btn-kop-yellow:hover {
+    background-color: var(--kop-yellow-hover);
+    color: #252B33;
+}
+
+.btn-outline-kop {
+    color: var(--kop-primary);
+    border-color: var(--kop-primary);
+    font-weight: 600;
+}
+
+.btn-outline-kop:hover {
+    background-color: var(--kop-primary);
+    color: #ffffff;
+}
+
+/* Card Styling */
+.card-custom {
+    border: none;
+    border-radius: 14px;
+    box-shadow: var(--kop-card-shadow);
+    background: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-custom:hover {
+    box-shadow: var(--kop-card-shadow-hover);
+}
+
+.badge-kop-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+/* Customer Mobile First Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #ffffff;
+    border-top: 1px solid #e5e9f0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1040;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8c98a4;
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.bottom-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 2px;
+}
+
+.bottom-nav-item.active {
+    color: var(--kop-primary);
+}
+
+.nav-badge-count {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    background: var(--kop-danger);
+    color: #fff;
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+/* Sidebar Dashboard for Admin & Petugas */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.dashboard-sidebar {
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #e9ecef;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.25s ease;
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    min-width: 0;
+    background-color: var(--kop-bg);
+}
+
+.sidebar-brand {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f3f5;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--kop-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 16px 12px;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu-header {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9aa5b1;
+    padding: 12px 14px 6px;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-menu-item {
+    margin-bottom: 4px;
+}
+
+.sidebar-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: #4b5563;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.sidebar-menu-link i {
+    font-size: 1.15rem;
+    width: 22px;
+    text-align: center;
+}
+
+.sidebar-menu-link:hover {
+    background-color: var(--kop-primary-light);
+    color: var(--kop-primary);
+}
+
+.sidebar-menu-link.active {
+    background-color: var(--kop-primary);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar-menu-link.active i {
+    color: #ffffff;
+}
+
+/* POS Quick Grid */
+.pos-product-card {
+    cursor: pointer;
+    border: 1px solid #e5e9f0;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+    transition: all 0.15s;
+    height: 100%;
+}
+
+.pos-product-card:hover {
+    border-color: var(--kop-primary);
+    box-shadow: 0 4px 12px rgba(22, 131, 74, 0.12);
+}
+
+/* Print styles for Receipt & PDF */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background: #fff !important;
+    }
+}
+

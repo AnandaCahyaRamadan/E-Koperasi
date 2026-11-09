@@ -1,0 +1,110 @@
+<div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-tags text-kop-primary me-2"></i>Kategori Produk</h4>
+            <p class="text-muted small mb-0">Kelompokkan barang dagangan koperasi agar mudah ditemukan oleh pelanggan.</p>
+        </div>
+        <div>
+            <button type="button" wire:click="openCreateModal" class="btn btn-kop-primary fw-semibold">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
+            </button>
+        </div>
+    </div>
+
+    <!-- Categories List Table -->
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small text-muted">
+                    <tr>
+                        <th style="width: 50px;">Icon</th>
+                        <th>Nama Kategori</th>
+                        <th>Slug URL</th>
+                        <th>Deskripsi</th>
+                        <th>Jumlah Produk</th>
+                        <th>Status</th>
+                        <th class="text-center" style="width: 120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="small">
+                    @forelse($categories as $cat)
+                        <tr>
+                            <td class="text-center">
+                                <i class="bi {{ $cat->icon ?? 'bi-tag' }} fs-5 text-kop-primary"></i>
+                            </td>
+                            <td class="fw-bold text-dark">{{ $cat->name }}</td>
+                            <td><code>{{ $cat->slug }}</code></td>
+                            <td class="text-muted">{{ $cat->description ?: '-' }}</td>
+                            <td>
+                                <span class="badge bg-kop-light text-kop-primary">{{ $cat->products_count }} produk</span>
+                            </td>
+                            <td>
+                                <span class="badge {{ $cat->is_active ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ $cat->is_active ? 'Aktif' : 'Non-Aktif' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" wire:click="openEditModal({{ $cat->id }})" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 0.72rem;">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" 
+                                        wire:click="deleteCategory({{ $cat->id }})" 
+                                        wire:confirm="Yakin ingin menghapus kategori {{ $cat->name }}?"
+                                        class="btn btn-outline-danger btn-sm py-0 px-2 ms-1" style="font-size: 0.72rem;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">Belum ada kategori yang dibuat.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Form -->
+    @if($showModal)
+        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 card-custom">
+                    <div class="modal-header border-0 pb-0">
+                        <h6 class="modal-title fw-bold text-dark">{{ $categoryId ? 'Edit Kategori' : 'Tambah Kategori Baru' }}</h6>
+                        <button type="button" class="btn-close" wire:click="closeModal"></button>
+                    </div>
+                    <form wire:submit.prevent="save">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Nama Kategori</label>
+                                <input type="text" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Contoh: Makanan & Snack">
+                                @error('name') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Class Icon Bootstrap (Opsional)</label>
+                                <input type="text" wire:model="icon" class="form-control" placeholder="Contoh: bi-cup-hot, bi-basket2, bi-pencil">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Deskripsi Singkat</label>
+                                <textarea wire:model="description" rows="2" class="form-control" placeholder="Deskripsi kategori..."></textarea>
+                            </div>
+
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" wire:model="is_active" id="catActive">
+                                <label class="form-check-label small" for="catActive">Aktifkan Kategori</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-light" wire:click="closeModal">Batal</button>
+                            <button type="submit" class="btn btn-kop-primary fw-semibold">Simpan Kategori</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+
