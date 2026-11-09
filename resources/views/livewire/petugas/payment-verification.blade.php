@@ -8,32 +8,32 @@
     </div>
 
     <!-- Filter Buttons -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
                 <span class="small fw-semibold text-muted me-2">Status:</span>
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" wire:click="$set('filterStatus', 'waiting_verification')" class="btn {{ $filterStatus === 'waiting_verification' ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary' }}">
-                        Menunggu Verifikasi
+                <div class="d-inline-flex gap-1 flex-wrap">
+                    <button type="button" wire:click="$set('filterStatus', 'waiting_verification')" class="cat-pill {{ $filterStatus === 'waiting_verification' ? 'active' : '' }}">
+                        <i class="bi bi-hourglass-split"></i> Menunggu Verifikasi
                     </button>
-                    <button type="button" wire:click="$set('filterStatus', 'paid')" class="btn {{ $filterStatus === 'paid' ? 'btn-success fw-bold' : 'btn-outline-secondary' }}">
-                        Lunas / ACC
+                    <button type="button" wire:click="$set('filterStatus', 'paid')" class="cat-pill {{ $filterStatus === 'paid' ? 'active' : '' }}">
+                        <i class="bi bi-check-circle"></i> Lunas / ACC
                     </button>
-                    <button type="button" wire:click="$set('filterStatus', 'rejected')" class="btn {{ $filterStatus === 'rejected' ? 'btn-danger fw-bold' : 'btn-outline-secondary' }}">
-                        Ditolak
+                    <button type="button" wire:click="$set('filterStatus', 'rejected')" class="cat-pill {{ $filterStatus === 'rejected' ? 'active' : '' }}">
+                        <i class="bi bi-x-circle"></i> Ditolak
                     </button>
-                    <button type="button" wire:click="$set('filterStatus', 'all')" class="btn {{ $filterStatus === 'all' ? 'btn-dark fw-bold' : 'btn-outline-secondary' }}">
-                        Semua Status
+                    <button type="button" wire:click="$set('filterStatus', 'all')" class="cat-pill {{ $filterStatus === 'all' ? 'active' : '' }}">
+                        Semua
                     </button>
                 </div>
             </div>
 
             <div class="col-md-6 text-md-end">
                 <span class="small fw-semibold text-muted me-2">Metode:</span>
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" wire:click="$set('filterMethod', 'all')" class="btn {{ $filterMethod === 'all' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Semua</button>
-                    <button type="button" wire:click="$set('filterMethod', 'qris')" class="btn {{ $filterMethod === 'qris' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">QRIS</button>
-                    <button type="button" wire:click="$set('filterMethod', 'cash')" class="btn {{ $filterMethod === 'cash' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Tunai</button>
+                <div class="d-inline-flex gap-1 flex-wrap">
+                    <button type="button" wire:click="$set('filterMethod', 'all')" class="cat-pill {{ $filterMethod === 'all' ? 'active' : '' }}">Semua</button>
+                    <button type="button" wire:click="$set('filterMethod', 'qris')" class="cat-pill {{ $filterMethod === 'qris' ? 'active' : '' }}"><i class="bi bi-qr-code"></i> QRIS</button>
+                    <button type="button" wire:click="$set('filterMethod', 'cash')" class="cat-pill {{ $filterMethod === 'cash' ? 'active' : '' }}"><i class="bi bi-cash"></i> Tunai</button>
                 </div>
             </div>
         </div>

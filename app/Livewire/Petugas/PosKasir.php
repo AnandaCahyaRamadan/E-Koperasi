@@ -189,10 +189,13 @@ class PosKasir extends Component
 
             $this->lastCompletedOrder = Order::with('items')->find($order->id);
             $this->clearCart();
-            session()->flash('success', "Transaksi {$order->order_number} berhasil diselesaikan!");
+            $successMsg = "Transaksi {$order->order_number} berhasil diselesaikan!";
+            session()->flash('success', $successMsg);
+            $this->dispatch('toast', ['type' => 'success', 'message' => $successMsg, 'title' => 'Kasir POS']);
 
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
+            $this->dispatch('swal:modal', ['type' => 'error', 'title' => 'Gagal Transaksi', 'text' => $e->getMessage()]);
         }
     }
 

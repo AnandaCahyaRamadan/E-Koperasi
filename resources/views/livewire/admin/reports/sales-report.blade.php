@@ -16,15 +16,21 @@
     </div>
 
     <!-- Date Filter -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-3">
                 <label class="form-label small fw-semibold text-muted mb-1">Mulai Tanggal:</label>
-                <input type="date" wire:model.live="startDate" class="form-control form-control-sm">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-kop-primary border-end-0"><i class="bi bi-calendar3"></i></span>
+                    <input type="text" wire:model.live="startDate" class="form-control form-control-sm border-start-0 datepicker" placeholder="Pilih tanggal mulai...">
+                </div>
             </div>
             <div class="col-md-3">
                 <label class="form-label small fw-semibold text-muted mb-1">Sampai Tanggal:</label>
-                <input type="date" wire:model.live="endDate" class="form-control form-control-sm">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-kop-primary border-end-0"><i class="bi bi-calendar-event"></i></span>
+                    <input type="text" wire:model.live="endDate" class="form-control form-control-sm border-start-0 datepicker" placeholder="Pilih tanggal akhir...">
+                </div>
             </div>
             <div class="col-md-6 text-md-end mt-md-4">
                 <span class="badge bg-kop-light text-kop-primary p-2">

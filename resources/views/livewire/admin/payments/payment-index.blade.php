@@ -4,11 +4,11 @@
             <h4 class="fw-bold text-dark mb-1"><i class="bi bi-qr-code-scan text-kop-primary me-2"></i>Verifikasi Pembayaran (Admin)</h4>
             <p class="text-muted small mb-0">Pantau seluruh catatan pembayaran transaksi QRIS dan tunai pelanggan.</p>
         </div>
-        <div class="btn-group btn-group-sm" role="group">
-            <button type="button" wire:click="$set('filterStatus', 'all')" class="btn {{ $filterStatus === 'all' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Semua</button>
-            <button type="button" wire:click="$set('filterStatus', 'waiting_verification')" class="btn {{ $filterStatus === 'waiting_verification' ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary' }}">Menunggu Verifikasi</button>
-            <button type="button" wire:click="$set('filterStatus', 'paid')" class="btn {{ $filterStatus === 'paid' ? 'btn-success fw-bold' : 'btn-outline-secondary' }}">Lunas</button>
-            <button type="button" wire:click="$set('filterStatus', 'rejected')" class="btn {{ $filterStatus === 'rejected' ? 'btn-danger fw-bold' : 'btn-outline-secondary' }}">Ditolak</button>
+        <div class="d-inline-flex gap-1 flex-wrap">
+            <button type="button" wire:click="$set('filterStatus', 'all')" class="cat-pill {{ $filterStatus === 'all' ? 'active' : '' }}">Semua</button>
+            <button type="button" wire:click="$set('filterStatus', 'waiting_verification')" class="cat-pill {{ $filterStatus === 'waiting_verification' ? 'active' : '' }}"><i class="bi bi-hourglass-split"></i> Verifikasi</button>
+            <button type="button" wire:click="$set('filterStatus', 'paid')" class="cat-pill {{ $filterStatus === 'paid' ? 'active' : '' }}"><i class="bi bi-check-circle"></i> Lunas</button>
+            <button type="button" wire:click="$set('filterStatus', 'rejected')" class="cat-pill {{ $filterStatus === 'rejected' ? 'active' : '' }}"><i class="bi bi-x-circle"></i> Ditolak</button>
         </div>
     </div>
 

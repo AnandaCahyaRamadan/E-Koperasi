@@ -61,7 +61,9 @@ class ProductCatalog extends Component
         $product = Product::findOrFail($productId);
 
         if ($product->stock < $quantity) {
-            session()->flash('error', "Maaf, stok {$product->name} tidak mencukupi.");
+            $msg = "Maaf, stok {$product->name} tidak mencukupi.";
+            session()->flash('error', $msg);
+            $this->dispatch('toast', ['type' => 'error', 'message' => $msg, 'title' => 'Stok Habis']);
             return;
         }
 
@@ -72,7 +74,9 @@ class ProductCatalog extends Component
 
         $currentQty = $item ? $item->quantity : 0;
         if ($currentQty + $quantity > $product->stock) {
-            session()->flash('error', "Jumlah melebihi stok yang tersedia ({$product->stock} {$product->unit?->symbol}).");
+            $msg = "Jumlah melebihi stok yang tersedia ({$product->stock} {$product->unit?->symbol}).";
+            session()->flash('error', $msg);
+            $this->dispatch('toast', ['type' => 'error', 'message' => $msg, 'title' => 'Stok Terbatas']);
             return;
         }
 
@@ -87,7 +91,9 @@ class ProductCatalog extends Component
         }
 
         $this->dispatch('cart-updated');
-        session()->flash('success', "{$product->name} berhasil ditambahkan ke keranjang!");
+        $successMsg = "{$product->name} berhasil ditambahkan ke keranjang!";
+        session()->flash('success', $successMsg);
+        $this->dispatch('toast', ['type' => 'success', 'message' => $successMsg, 'title' => 'Keranjang']);
     }
 
     public function render()

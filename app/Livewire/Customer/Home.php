@@ -41,7 +41,9 @@ class Home extends Component
 
         $currentQty = $item ? $item->quantity : 0;
         if ($currentQty + 1 > $product->stock) {
-            session()->flash('error', "Jumlah melebihi stok yang tersedia ({$product->stock} {$product->unit?->symbol}).");
+            $msg = "Jumlah melebihi stok yang tersedia ({$product->stock} {$product->unit?->symbol}).";
+            session()->flash('error', $msg);
+            $this->dispatch('toast', ['type' => 'error', 'message' => $msg, 'title' => 'Stok Terbatas']);
             return;
         }
 
@@ -56,7 +58,9 @@ class Home extends Component
         }
 
         $this->dispatch('cart-updated');
-        session()->flash('success', "{$product->name} berhasil ditambahkan ke keranjang!");
+        $successMsg = "{$product->name} berhasil ditambahkan ke keranjang!";
+        session()->flash('success', $successMsg);
+        $this->dispatch('toast', ['type' => 'success', 'message' => $successMsg, 'title' => 'Keranjang']);
     }
 
     public function render()

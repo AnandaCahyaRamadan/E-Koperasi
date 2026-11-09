@@ -48,19 +48,24 @@
     </div>
 
     <!-- Filter & Search -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-0" placeholder="Ketik nama atau kode barang...">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Ketik nama atau kode barang...">
+                    @if($search)
+                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-md-6 text-md-end">
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" wire:click="$set('filterStock', 'all')" class="btn {{ $filterStock === 'all' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Semua Stok</button>
-                    <button type="button" wire:click="$set('filterStock', 'low')" class="btn {{ $filterStock === 'low' ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary' }}">Stok Menipis ({{ $lowStockCount }})</button>
-                    <button type="button" wire:click="$set('filterStock', 'out')" class="btn {{ $filterStock === 'out' ? 'btn-danger fw-bold' : 'btn-outline-secondary' }}">Habis ({{ $outOfStockCount }})</button>
+                <div class="d-inline-flex gap-1 flex-wrap">
+                    <button type="button" wire:click="$set('filterStock', 'all')" class="cat-pill {{ $filterStock === 'all' ? 'active' : '' }}">Semua Stok</button>
+                    <button type="button" wire:click="$set('filterStock', 'low')" class="cat-pill {{ $filterStock === 'low' ? 'active' : '' }}"><i class="bi bi-exclamation-triangle"></i> Menipis ({{ $lowStockCount }})</button>
+                    <button type="button" wire:click="$set('filterStock', 'out')" class="cat-pill {{ $filterStock === 'out' ? 'active' : '' }}"><i class="bi bi-x-circle"></i> Habis ({{ $outOfStockCount }})</button>
                 </div>
             </div>
         </div>

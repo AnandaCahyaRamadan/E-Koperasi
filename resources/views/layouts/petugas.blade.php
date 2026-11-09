@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Kasir Operasional') - {{ \App\Models\Setting::get('koperasi_name', 'E-Koperasi') }}</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS (Offline) -->
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Bootstrap Icons (Offline) -->
+    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet">
     <!-- Custom Style -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     @livewireStyles
     @stack('styles')
 </head>
 <body>
+    <div class="top-nav-loader" id="petugas-nav-loader"></div>
     <div class="dashboard-wrapper">
         <!-- Sidebar Petugas -->
         <aside class="dashboard-sidebar">
@@ -96,16 +97,22 @@
                         <i class="bi bi-plus-circle me-1"></i> Transaksi Baru (POS)
                     </a>
 
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 border-0" type="button" data-bs-toggle="dropdown">
-                            <div class="bg-kop-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 0.85rem;">
+                    <div class="dropdown" x-data="{ open: false }" @click.outside="open = false">
+                        <button class="btn btn-user-pill dropdown-toggle d-flex align-items-center gap-2" 
+                                type="button" 
+                                @click="open = !open" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false">
+                            <div class="bg-kop-light text-kop-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
-                            <span class="small fw-semibold">{{ auth()->user()->name }}</span>
+                            <span class="small fw-semibold text-dark">{{ auth()->user()->name }}</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" 
+                            :class="{ 'show': open }" 
+                            :style="open ? 'display: block; position: absolute; right: 0; top: 100%; z-index: 1050;' : ''">
                             <li class="dropdown-header">
-                                <span class="fw-bold">{{ auth()->user()->name }}</span><br>
+                                <span class="fw-bold text-dark">{{ auth()->user()->name }}</span><br>
                                 <small class="text-muted">Kasir ID: {{ auth()->user()->employee_id ?? 'KAS' }}</small>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -138,6 +145,7 @@
                     </div>
                 @endif
 
+                {{ $slot ?? '' }}
                 @yield('content')
             </div>
 
@@ -148,8 +156,19 @@
         </div>
     </div>
 
-    <!-- Bootstrap 5 Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 Bundle JS (Offline) -->
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    @include('partials.scripts-common')
+    <script>
+        document.addEventListener('livewire:navigating', () => {
+            const loader = document.getElementById('petugas-nav-loader');
+            if (loader) loader.style.display = 'block';
+        });
+        document.addEventListener('livewire:navigated', () => {
+            const loader = document.getElementById('petugas-nav-loader');
+            if (loader) loader.style.display = 'none';
+        });
+    </script>
     @livewireScripts
     @stack('scripts')
 </body>

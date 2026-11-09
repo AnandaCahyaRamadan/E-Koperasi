@@ -8,20 +8,25 @@
     </div>
 
     <!-- Filter Card -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-5">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="searchProduct" class="form-control border-start-0 ps-0" placeholder="Cari nama atau kode produk...">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="searchProduct" class="form-control border-start-0 ps-2" placeholder="Cari nama atau kode produk...">
+                    @if($searchProduct)
+                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('searchProduct', '')">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-md-7 text-md-end">
-                <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" wire:click="$set('filterType', 'all')" class="btn {{ $filterType === 'all' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Semua Tipe</button>
-                    <button type="button" wire:click="$set('filterType', 'in')" class="btn {{ $filterType === 'in' ? 'btn-success fw-bold' : 'btn-outline-secondary' }}">Barang Masuk</button>
-                    <button type="button" wire:click="$set('filterType', 'out')" class="btn {{ $filterType === 'out' ? 'btn-danger fw-bold' : 'btn-outline-secondary' }}">Barang Keluar</button>
-                    <button type="button" wire:click="$set('filterType', 'adjustment')" class="btn {{ $filterType === 'adjustment' ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary' }}">Opname / Penyesuaian</button>
+                <div class="d-inline-flex gap-1 flex-wrap">
+                    <button type="button" wire:click="$set('filterType', 'all')" class="cat-pill {{ $filterType === 'all' ? 'active' : '' }}">Semua Tipe</button>
+                    <button type="button" wire:click="$set('filterType', 'in')" class="cat-pill {{ $filterType === 'in' ? 'active' : '' }}"><i class="bi bi-box-arrow-in-down"></i> Masuk</button>
+                    <button type="button" wire:click="$set('filterType', 'out')" class="cat-pill {{ $filterType === 'out' ? 'active' : '' }}"><i class="bi bi-box-arrow-up"></i> Keluar</button>
+                    <button type="button" wire:click="$set('filterType', 'adjustment')" class="cat-pill {{ $filterType === 'adjustment' ? 'active' : '' }}"><i class="bi bi-sliders"></i> Penyesuaian</button>
                 </div>
             </div>
         </div>

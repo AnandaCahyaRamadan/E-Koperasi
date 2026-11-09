@@ -7,8 +7,13 @@
                 <div class="row g-2 mb-3">
                     <div class="col-md-7">
                         <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-upc-scan"></i></span>
-                            <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-0" placeholder="Ketik nama atau scan barcode...">
+                            <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-upc-scan text-kop-primary"></i></span>
+                            <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Ketik nama atau scan barcode...">
+                            @if($search)
+                                <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </button>
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-5">

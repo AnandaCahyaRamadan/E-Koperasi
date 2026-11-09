@@ -12,10 +12,15 @@
     </div>
 
     <!-- Search -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
-        <div class="input-group input-group-sm" style="max-width: 400px;">
-            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-            <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-0" placeholder="Cari No. PO, Supplier, atau No. Faktur...">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
+        <div class="input-group" style="max-width: 420px;">
+            <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
+            <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Cari No. PO, Supplier, atau No. Faktur...">
+            @if($search)
+                <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
+                    <i class="bi bi-x-circle-fill"></i>
+                </button>
+            @endif
         </div>
     </div>
 

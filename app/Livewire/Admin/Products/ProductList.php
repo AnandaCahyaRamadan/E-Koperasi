@@ -27,15 +27,19 @@ class ProductList extends Component
             return;
         }
 
+        $name = $product->name;
         $product->delete();
-        session()->flash('success', 'Produk berhasil dihapus.');
+        session()->flash('success', "Produk {$name} berhasil dihapus.");
+        $this->dispatch('toast', ['type' => 'info', 'message' => "Produk {$name} berhasil dihapus."]);
     }
 
     public function toggleActive($id)
     {
         $product = Product::findOrFail($id);
         $product->update(['is_active' => !$product->is_active]);
-        session()->flash('success', "Status produk {$product->name} diperbarui.");
+        $statusStr = $product->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        session()->flash('success', "Produk {$product->name} berhasil {$statusStr}.");
+        $this->dispatch('toast', ['type' => 'success', 'message' => "Produk {$product->name} {$statusStr}."]);
     }
 
     public function render()

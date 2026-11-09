@@ -25,8 +25,11 @@
 
                 <div class="col-md-4">
                     <label class="form-label small fw-semibold text-muted">Tanggal Penerimaan <span class="text-danger">*</span></label>
-                    <input type="date" wire:model="purchase_date" class="form-control @error('purchase_date') is-invalid @enderror">
-                    @error('purchase_date') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-kop-primary border-end-0"><i class="bi bi-calendar-date"></i></span>
+                        <input type="text" wire:model="purchase_date" class="form-control border-start-0 datepicker @error('purchase_date') is-invalid @enderror" placeholder="Pilih tanggal PO...">
+                    </div>
+                    @error('purchase_date') <div class="invalid-feedback d-block small">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="col-md-4">

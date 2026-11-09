@@ -7,7 +7,10 @@
         <div>
             <div class="d-flex align-items-center gap-2">
                 <label class="small text-muted text-nowrap">Pilih Tanggal:</label>
-                <input type="date" wire:model.live="dateFilter" class="form-control form-control-sm">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light text-kop-primary border-end-0"><i class="bi bi-calendar3"></i></span>
+                    <input type="text" wire:model.live="dateFilter" class="form-control form-control-sm border-start-0 datepicker" placeholder="Pilih tanggal...">
+                </div>
             </div>
         </div>
     </div>

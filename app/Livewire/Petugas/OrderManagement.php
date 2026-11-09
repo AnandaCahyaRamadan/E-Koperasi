@@ -57,7 +57,9 @@ class OrderManagement extends Component
 
         $order->addStatusHistory($newStatus, $statusNotes, $user->id);
 
-        session()->flash('success', "Status pesanan {$order->order_number} berhasil diperbarui.");
+        $msg = "Status pesanan {$order->order_number} berhasil diperbarui ke: " . $order->status_label;
+        session()->flash('success', $msg);
+        $this->dispatch('toast', ['type' => 'success', 'message' => $msg, 'title' => 'Update Status']);
     }
 
     public function render()

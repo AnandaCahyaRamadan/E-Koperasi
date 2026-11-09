@@ -8,14 +8,17 @@
     </div>
 
     <!-- Filter Card -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-3">
-                <input type="text" wire:model.live.debounce.300ms="search" class="form-control form-control-sm" placeholder="No. Pesanan / Nama...">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-1" placeholder="No. Pesanan / Nama...">
+                </div>
             </div>
             <div class="col-6 col-md-2">
                 <select wire:model.live="filterStatus" class="form-select form-select-sm">
-                    <option value="all">Semua Status Pesanan</option>
+                    <option value="all">Semua Status</option>
                     <option value="pending_payment">Menunggu Bayar</option>
                     <option value="confirmed">Dikonfirmasi (Lunas)</option>
                     <option value="processing">Sedang Disiapkan</option>
@@ -27,21 +30,27 @@
             </div>
             <div class="col-6 col-md-2">
                 <select wire:model.live="filterPayment" class="form-select form-select-sm">
-                    <option value="all">Semua Pembayaran</option>
+                    <option value="all">Semua Bayar</option>
                     <option value="paid">Lunas</option>
-                    <option value="waiting_verification">Menunggu Verifikasi</option>
+                    <option value="waiting_verification">Verifikasi</option>
                     <option value="pending">Pending</option>
                     <option value="rejected">Ditolak</option>
                 </select>
             </div>
             <div class="col-6 col-md-2">
-                <input type="date" wire:model.live="startDate" class="form-control form-control-sm" placeholder="Dari">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                    <input type="text" wire:model.live="startDate" class="form-control border-start-0 ps-1 datepicker" placeholder="Dari tgl...">
+                </div>
             </div>
             <div class="col-6 col-md-2">
-                <input type="date" wire:model.live="endDate" class="form-control form-control-sm" placeholder="Sampai">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-calendar-check"></i></span>
+                    <input type="text" wire:model.live="endDate" class="form-control border-start-0 ps-1 datepicker" placeholder="Sampai tgl...">
+                </div>
             </div>
             <div class="col-12 col-md-1">
-                <button type="button" wire:click="$set('search', ''); $set('filterStatus', 'all'); $set('filterPayment', 'all'); $set('startDate', ''); $set('endDate', '');" class="btn btn-outline-secondary btn-sm w-100">
+                <button type="button" wire:click="$set('search', ''); $set('filterStatus', 'all'); $set('filterPayment', 'all'); $set('startDate', ''); $set('endDate', '');" class="btn btn-outline-secondary btn-sm w-100 rounded-pill">
                     Reset
                 </button>
             </div>

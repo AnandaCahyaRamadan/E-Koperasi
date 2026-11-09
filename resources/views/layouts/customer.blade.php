@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>@yield('title', 'E-Koperasi') - Koperasi Pegawai</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS (Offline) -->
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Bootstrap Icons (Offline) -->
+    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet">
     <!-- Custom Style -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     @livewireStyles
     @stack('styles')
 </head>
 <body class="bg-light pb-5 mb-4">
+    <!-- Top Progress Bar for Livewire navigation -->
+    <div class="top-nav-loader" id="page-nav-loader"></div>
+
     <!-- Customer Top Navbar -->
     <nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom py-2 shadow-sm">
         <div class="container">
@@ -52,13 +55,21 @@
                 </a>
 
                 @auth
-                    <!-- Profile dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary rounded-pill dropdown-toggle d-flex align-items-center gap-2 py-1 px-3" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle fs-5 text-kop-primary"></i>
-                            <span class="d-none d-md-inline small fw-semibold">{{ auth()->user()->name }}</span>
+                    <!-- Profile dropdown with Alpine.js and clean styling -->
+                    <div class="dropdown" x-data="{ open: false }" @click.outside="open = false">
+                        <button class="btn btn-user-pill dropdown-toggle d-flex align-items-center gap-2" 
+                                type="button" 
+                                @click="open = !open" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false">
+                            <div class="bg-kop-light text-kop-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            </div>
+                            <span class="d-none d-md-inline small fw-semibold text-dark">{{ auth()->user()->name }}</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" 
+                            :class="{ 'show': open }" 
+                            :style="open ? 'display: block; position: absolute; right: 0; top: 100%; z-index: 1050;' : ''">
                             <li class="dropdown-header">
                                 <div class="fw-bold text-dark">{{ auth()->user()->name }}</div>
                                 <small class="text-muted">{{ auth()->user()->employee_id ?? auth()->user()->email }}</small>
@@ -67,9 +78,9 @@
                             <li><a class="dropdown-item" href="{{ route('customer.orders') }}" wire:navigate><i class="bi bi-bag-check me-2 text-kop-primary"></i> Riwayat Pesanan</a></li>
                             <li><a class="dropdown-item" href="{{ route('customer.profile') }}" wire:navigate><i class="bi bi-person me-2 text-kop-primary"></i> Profil Saya</a></li>
                             @if(auth()->user()->isAdmin())
-                                <li><a class="dropdown-item text-primary" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2"></i> Panel Admin</a></li>
+                                <li><a class="dropdown-item text-success fw-semibold" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2"></i> Panel Admin</a></li>
                             @elseif(auth()->user()->isPetugas())
-                                <li><a class="dropdown-item text-primary" href="{{ route('petugas.dashboard') }}"><i class="bi bi-calculator me-2"></i> Panel Kasir</a></li>
+                                <li><a class="dropdown-item text-warning fw-semibold text-dark" href="{{ route('petugas.dashboard') }}"><i class="bi bi-calculator me-2"></i> Panel Kasir</a></li>
                             @endif
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -107,6 +118,7 @@
 
     <!-- Main Content -->
     <main class="container my-3">
+        {{ $slot ?? '' }}
         @yield('content')
     </main>
 
@@ -137,8 +149,19 @@
         </a>
     </nav>
 
-    <!-- Bootstrap 5 Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 Bundle JS (Offline) -->
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    @include('partials.scripts-common')
+    <script>
+        document.addEventListener('livewire:navigating', () => {
+            const loader = document.getElementById('page-nav-loader');
+            if (loader) loader.style.display = 'block';
+        });
+        document.addEventListener('livewire:navigated', () => {
+            const loader = document.getElementById('page-nav-loader');
+            if (loader) loader.style.display = 'none';
+        });
+    </script>
     @livewireScripts
     @stack('scripts')
 </body>

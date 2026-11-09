@@ -11,16 +11,21 @@
     </div>
 
     <!-- Filter & Search Controls -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm">
-        <div class="row g-2">
-            <div class="col-md-5">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm" style="border-radius: 16px;">
+        <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-5">
                 <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.350ms="search" class="form-control border-start-0 ps-0" placeholder="Ketik nama atau kode produk...">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.350ms="search" class="form-control border-start-0 ps-0 shadow-none" placeholder="Cari nama atau kode produk...">
+                    @if($search)
+                        <button class="btn btn-link text-muted text-decoration-none pe-2" wire:click="$set('search', '')">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-6 col-md-4">
-                <select wire:model.live="category" class="form-select">
+                <select wire:model.live="category" class="form-select shadow-none">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -28,7 +33,7 @@
                 </select>
             </div>
             <div class="col-6 col-md-3">
-                <select wire:model.live="sort" class="form-select">
+                <select wire:model.live="sort" class="form-select shadow-none">
                     <option value="latest">Terbaru</option>
                     <option value="price_asc">Harga: Terendah</option>
                     <option value="price_desc">Harga: Tertinggi</option>
@@ -38,73 +43,93 @@
         </div>
     </div>
 
-    <!-- Product Grid -->
-    @if($products->isEmpty())
-        <div class="card card-custom text-center p-5 border-0 bg-white shadow-sm">
-            <i class="bi bi-bag-x fs-1 text-muted mb-2"></i>
-            <h6 class="fw-bold text-muted">Tidak Ada Produk Yang Cocok</h6>
-            <p class="text-muted small mb-3">Coba gunakan kata kunci lain atau bersihkan filter Anda.</p>
-            <div>
-                <button wire:click="$set('search', ''); $set('category', '');" class="btn btn-outline-kop btn-sm">Reset Filter</button>
-            </div>
-        </div>
-    @else
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4">
-            @foreach($products as $product)
-                <div class="col">
-                    <div class="card card-custom h-100 p-3 d-flex flex-column border-0">
-                        <!-- Image Container with click for detail -->
-                        <div role="button" wire:click="showProductDetail({{ $product->id }})" class="bg-light rounded-3 d-flex align-items-center justify-content-center p-3 mb-2 position-relative cursor-pointer" style="height: 140px;">
-                            @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid" style="max-height: 120px; object-fit: contain;">
-                            @else
-                                <i class="bi bi-box-seam text-secondary fs-1 opacity-50"></i>
-                            @endif
-
-                            @if($product->stock <= 0)
-                                <span class="badge bg-danger position-absolute top-0 end-0 m-2 rounded-pill small">Habis</span>
-                            @elseif($product->is_low_stock)
-                                <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2 rounded-pill small">Sisa {{ $product->stock }}</span>
-                            @endif
-                        </div>
-
-                        <span class="badge bg-kop-light text-kop-primary rounded-pill mb-1 small text-truncate" style="max-width: fit-content; font-size: 0.68rem;">
-                            {{ $product->category?->name ?? 'Koperasi' }}
-                        </span>
-                        <h6 role="button" wire:click="showProductDetail({{ $product->id }})" class="fw-bold text-dark mb-1 small text-decoration-none" style="line-height: 1.3;" title="{{ $product->name }}">
-                            {{ $product->name }}
-                        </h6>
-                        <small class="text-muted text-uppercase mb-2" style="font-size: 0.65rem;">Kode: {{ $product->code }}</small>
-
-                        <div class="d-flex justify-content-between align-items-end mt-auto pt-2 border-top">
-                            <div>
-                                <span class="fw-bold text-kop-primary">{{ $product->formatted_price }}</span>
-                                <small class="text-muted d-block" style="font-size: 0.68rem;">
-                                    Tersedia: <span class="{{ $product->stock > 0 ? 'text-success fw-semibold' : 'text-danger' }}">{{ $product->stock }} {{ $product->unit?->symbol }}</span>
-                                </small>
-                            </div>
-                            <button type="button" 
-                                    wire:click="addToCart({{ $product->id }})" 
-                                    class="btn btn-kop-primary btn-sm rounded-pill px-3 py-1 fw-semibold {{ $product->stock < 1 ? 'disabled' : '' }}"
-                                    {{ $product->stock < 1 ? 'disabled' : '' }}>
-                                <i class="bi bi-cart-plus me-1"></i> Beli
-                            </button>
-                        </div>
+    <!-- Shimmer Skeleton Placeholder Grid while Loading Filter/Sort/Search/Page -->
+    <div wire:loading.grid wire:target="search, category, sort, previousPage, nextPage, gotoPage" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4">
+        @for($i = 0; $i < 8; $i++)
+            <div class="col">
+                <div class="skeleton-card">
+                    <div class="skeleton-box skeleton-image"></div>
+                    <div class="skeleton-box skeleton-sub" style="width: 35%;"></div>
+                    <div class="skeleton-box skeleton-title" style="width: 80%;"></div>
+                    <div class="skeleton-box skeleton-sub" style="width: 50%; margin-bottom: 16px;"></div>
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                        <div class="skeleton-box skeleton-price"></div>
+                        <div class="skeleton-box skeleton-btn"></div>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endfor
+    </div>
 
-        <div class="d-flex justify-content-center">
-            {{ $products->links() }}
-        </div>
-    @endif
+    <!-- Real Content Area (Hidden during Livewire filtering / pagination) -->
+    <div wire:loading.remove wire:target="search, category, sort, previousPage, nextPage, gotoPage">
+        @if($products->isEmpty())
+            <div class="card card-custom text-center p-5 border-0 bg-white shadow-sm" style="border-radius: 16px;">
+                <i class="bi bi-bag-x fs-1 text-muted mb-2"></i>
+                <h6 class="fw-bold text-muted">Tidak Ada Produk Yang Cocok</h6>
+                <p class="text-muted small mb-3">Coba gunakan kata kunci lain atau bersihkan filter Anda.</p>
+                <div>
+                    <button wire:click="$set('search', ''); $set('category', '');" class="btn btn-outline-kop btn-sm rounded-pill px-4">Reset Filter</button>
+                </div>
+            </div>
+        @else
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4">
+                @foreach($products as $product)
+                    <div class="col">
+                        <div class="product-card-modern">
+                            <!-- Image Container with click for detail -->
+                            <div role="button" wire:click="showProductDetail({{ $product->id }})" class="product-img-box cursor-pointer" title="Klik untuk lihat detail">
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" loading="lazy">
+                                @else
+                                    <i class="bi bi-box-seam text-secondary fs-1 opacity-50"></i>
+                                @endif
+
+                                @if($product->stock <= 0)
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2 rounded-pill small">Habis</span>
+                                @elseif($product->is_low_stock)
+                                    <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2 rounded-pill small">Sisa {{ $product->stock }}</span>
+                                @endif
+                            </div>
+
+                            <span class="badge bg-kop-light text-kop-primary rounded-pill mb-1 small text-truncate" style="max-width: fit-content; font-size: 0.68rem;">
+                                {{ $product->category?->name ?? 'Koperasi' }}
+                            </span>
+                            <h6 role="button" wire:click="showProductDetail({{ $product->id }})" class="fw-bold text-dark mb-1 small text-clamp-2" title="{{ $product->name }}">
+                                {{ $product->name }}
+                            </h6>
+                            <small class="text-muted text-uppercase mb-2" style="font-size: 0.65rem;">Kode: {{ $product->code }}</small>
+
+                            <div class="d-flex justify-content-between align-items-end mt-auto pt-2 border-top">
+                                <div>
+                                    <span class="fw-bold text-kop-primary">{{ $product->formatted_price }}</span>
+                                    <small class="text-muted d-block" style="font-size: 0.68rem;">
+                                        Tersedia: <span class="{{ $product->stock > 0 ? 'text-success fw-semibold' : 'text-danger' }}">{{ $product->stock }} {{ $product->unit?->symbol }}</span>
+                                    </small>
+                                </div>
+                                <button type="button" 
+                                        wire:click="addToCart({{ $product->id }})" 
+                                        class="btn btn-kop-primary btn-sm rounded-pill px-3 py-1 fw-semibold {{ $product->stock < 1 ? 'disabled' : '' }}"
+                                        {{ $product->stock < 1 ? 'disabled' : '' }}>
+                                    <i class="bi bi-cart-plus me-1"></i> Beli
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="d-flex justify-content-center">
+                {{ $products->links() }}
+            </div>
+        @endif
+    </div>
 
     <!-- Product Detail Modal (Livewire Controlled) -->
     @if($selectedProduct)
         <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 card-custom">
+                <div class="modal-content border-0 card-custom" style="border-radius: 18px;">
                     <div class="modal-header border-0 pb-0">
                         <h6 class="modal-title fw-bold text-dark"><i class="bi bi-info-circle text-kop-primary me-2"></i>Detail Produk</h6>
                         <button type="button" class="btn-close" wire:click="closeProductDetail"></button>
@@ -143,10 +168,10 @@
                         </div>
                     </div>
                     <div class="modal-footer border-0 pt-0">
-                        <button type="button" class="btn btn-light" wire:click="closeProductDetail">Tutup</button>
+                        <button type="button" class="btn btn-light rounded-pill px-3" wire:click="closeProductDetail">Tutup</button>
                         <button type="button" 
                                 wire:click="addToCart({{ $selectedProduct->id }})" 
-                                class="btn btn-kop-primary fw-semibold {{ $selectedProduct->stock < 1 ? 'disabled' : '' }}"
+                                class="btn btn-kop-primary rounded-pill px-4 fw-semibold {{ $selectedProduct->stock < 1 ? 'disabled' : '' }}"
                                 {{ $selectedProduct->stock < 1 ? 'disabled' : '' }}>
                             <i class="bi bi-cart-plus me-1"></i> Tambahkan ke Keranjang
                         </button>
@@ -156,4 +181,3 @@
         </div>
     @endif
 </div>
-

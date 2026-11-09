@@ -8,22 +8,27 @@
     </div>
 
     <!-- Filter & Search Bar -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="row g-2 align-items-center">
             <div class="col-md-5">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-0" placeholder="Cari No. Pesanan atau Nama Pegawai...">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Cari No. Pesanan atau Nama Pegawai...">
+                    @if($search)
+                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-md-7 text-md-end">
-                <div class="btn-group btn-group-sm flex-wrap" role="group">
-                    <button type="button" wire:click="$set('filterStatus', 'all')" class="btn {{ $filterStatus === 'all' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Semua</button>
-                    <button type="button" wire:click="$set('filterStatus', 'confirmed')" class="btn {{ $filterStatus === 'confirmed' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Siap Disiapkan</button>
-                    <button type="button" wire:click="$set('filterStatus', 'processing')" class="btn {{ $filterStatus === 'processing' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Sedang Disiapkan</button>
-                    <button type="button" wire:click="$set('filterStatus', 'ready_for_pickup')" class="btn {{ $filterStatus === 'ready_for_pickup' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Siap Diambil</button>
-                    <button type="button" wire:click="$set('filterStatus', 'on_delivery')" class="btn {{ $filterStatus === 'on_delivery' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Sedang Diantar</button>
-                    <button type="button" wire:click="$set('filterStatus', 'completed')" class="btn {{ $filterStatus === 'completed' ? 'btn-kop-primary fw-bold' : 'btn-outline-secondary' }}">Selesai</button>
+                <div class="d-flex gap-1 flex-wrap justify-content-md-end">
+                    <button type="button" wire:click="$set('filterStatus', 'all')" class="cat-pill {{ $filterStatus === 'all' ? 'active' : '' }}">Semua</button>
+                    <button type="button" wire:click="$set('filterStatus', 'confirmed')" class="cat-pill {{ $filterStatus === 'confirmed' ? 'active' : '' }}">Siap Disiapkan</button>
+                    <button type="button" wire:click="$set('filterStatus', 'processing')" class="cat-pill {{ $filterStatus === 'processing' ? 'active' : '' }}">Sedang Disiapkan</button>
+                    <button type="button" wire:click="$set('filterStatus', 'ready_for_pickup')" class="cat-pill {{ $filterStatus === 'ready_for_pickup' ? 'active' : '' }}">Siap Diambil</button>
+                    <button type="button" wire:click="$set('filterStatus', 'on_delivery')" class="cat-pill {{ $filterStatus === 'on_delivery' ? 'active' : '' }}">Sedang Diantar</button>
+                    <button type="button" wire:click="$set('filterStatus', 'completed')" class="cat-pill {{ $filterStatus === 'completed' ? 'active' : '' }}">Selesai</button>
                 </div>
             </div>
         </div>

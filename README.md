@@ -54,6 +54,18 @@ Aplikasi telah dilengkapi seeder data awal dengan akun uji coba:
 
 ---
 
+## 📦 Asset Pustaka Frontend (100% Offline)
+Seluruh pustaka frontend telah diunduh dan tersimpan secara lokal di folder `public/vendor/` sehingga aplikasi dapat berjalan normal tanpa koneksi internet (intranet-ready):
+- **Bootstrap 5.3.3:** `public/vendor/bootstrap/` (CSS & JS bundle)
+- **Bootstrap Icons 1.11.3:** `public/vendor/bootstrap-icons/` (CSS & Font Woff/Woff2)
+- **SweetAlert2 11:** `public/vendor/sweetalert2/` (CSS & JS)
+- **Toastr.js 2.1.4:** `public/vendor/toastr/` (CSS & JS)
+- **Flatpickr 4.6.13:** `public/vendor/flatpickr/` (CSS, JS & Indonesian locale)
+- **jQuery 3.7.1:** `public/vendor/jquery/`
+- **Chart.js 4.4:** `public/vendor/chartjs/`
+
+---
+
 ## 📚 Dokumentasi Lengkap
 Dokumentasi teknis menyeluruh, kamus data 19 tabel, dan alur bisnis tersedia di file:
 **[DOKUMENTASI_SISTEM_E-KOPERASI.md](DOKUMENTASI_SISTEM_E-KOPERASI.md)**.

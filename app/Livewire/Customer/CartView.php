@@ -45,9 +45,11 @@ class CartView extends Component
             $q->where('user_id', Auth::id());
         })->findOrFail($itemId);
 
+        $name = $item->product->name;
         $item->delete();
         $this->dispatch('cart-updated');
-        session()->flash('success', 'Produk berhasil dihapus dari keranjang.');
+        session()->flash('success', "{$name} dihapus dari keranjang.");
+        $this->dispatch('toast', ['type' => 'info', 'message' => "{$name} dihapus dari keranjang."]);
     }
 
     public function clearCart()
@@ -58,6 +60,7 @@ class CartView extends Component
         }
         $this->dispatch('cart-updated');
         session()->flash('success', 'Keranjang berhasil dikosongkan.');
+        $this->dispatch('toast', ['type' => 'warning', 'message' => 'Seluruh isi keranjang telah dikosongkan.']);
     }
 
     public function render()

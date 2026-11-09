@@ -13,16 +13,21 @@
     </div>
 
     <!-- Filter Card -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
-        <div class="row g-2">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
+        <div class="row g-2 align-items-center">
             <div class="col-md-7">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-0" placeholder="Cari nama, SKU/kode, atau deskripsi...">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Cari nama, SKU/kode, atau deskripsi...">
+                    @if($search)
+                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-md-5">
-                <select wire:model.live="selectedCategory" class="form-select form-select-sm">
+                <select wire:model.live="selectedCategory" class="form-select">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>

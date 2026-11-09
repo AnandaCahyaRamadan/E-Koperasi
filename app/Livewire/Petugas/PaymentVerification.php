@@ -51,7 +51,9 @@ class PaymentVerification extends Component
             $order->addStatusHistory('confirmed', 'Pembayaran ' . strtoupper($payment->payment_method) . ' diverifikasi lunas oleh ' . $user->name, $user->id);
         }
 
-        session()->flash('success', "Pembayaran untuk pesanan {$payment->order?->order_number} berhasil disetujui (ACC)!");
+        $msg = "Pembayaran untuk pesanan {$payment->order?->order_number} berhasil disetujui (ACC)!";
+        session()->flash('success', $msg);
+        $this->dispatch('toast', ['type' => 'success', 'message' => $msg, 'title' => 'Verifikasi Berhasil']);
     }
 
     public function openRejectModal($paymentId)
@@ -96,7 +98,9 @@ class PaymentVerification extends Component
             $order->addStatusHistory('payment_rejected', "Pembayaran ditolak: {$this->rejectionReason} (oleh {$user->name})", $user->id);
         }
 
-        session()->flash('success', "Pembayaran untuk pesanan {$this->selectedPayment->order?->order_number} telah ditolak.");
+        $msg = "Pembayaran untuk pesanan {$this->selectedPayment->order?->order_number} telah ditolak.";
+        session()->flash('success', $msg);
+        $this->dispatch('toast', ['type' => 'warning', 'message' => $msg, 'title' => 'Pembayaran Ditolak']);
         $this->closeRejectModal();
     }
 
