@@ -28,26 +28,8 @@
         </button>
     </div>
 
-    <!-- Skeleton Loading while filtering / paging -->
-    <div wire:loading.grid wire:target="setFilter, previousPage, nextPage, gotoPage" class="d-flex flex-column gap-3 mb-4">
-        @for($i = 0; $i < 4; $i++)
-            <div class="skeleton-card p-3">
-                <div class="d-flex justify-content-between mb-2">
-                    <div class="skeleton-box" style="width: 140px; height: 18px;"></div>
-                    <div class="skeleton-box" style="width: 80px; height: 18px;"></div>
-                </div>
-                <div class="skeleton-box mb-2" style="width: 65%; height: 16px;"></div>
-                <div class="skeleton-box mb-3" style="width: 45%; height: 14px;"></div>
-                <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                    <div class="skeleton-box" style="width: 110px; height: 22px;"></div>
-                    <div class="skeleton-box" style="width: 85px; height: 32px; border-radius: 20px;"></div>
-                </div>
-            </div>
-        @endfor
-    </div>
-
-    <!-- Real Orders Content -->
-    <div wire:loading.remove wire:target="setFilter, previousPage, nextPage, gotoPage">
+    <!-- Orders Content with smooth loading state -->
+    <div wire:loading.class="opacity-50" wire:target="setFilter, previousPage, nextPage, gotoPage" class="transition-opacity">
         @if($orders->isEmpty())
             <div class="card card-custom text-center p-5 border-0 bg-white shadow-sm my-3" style="border-radius: 16px;">
                 <i class="bi bi-clipboard-x fs-1 text-muted mb-2"></i>

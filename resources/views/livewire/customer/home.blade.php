@@ -74,7 +74,7 @@
     </div>
 
     <!-- Shimmer Skeleton Placeholder Grid while Loading Search / Filter -->
-    <div wire:loading.grid wire:target="search, selectedCategory, selectCategory" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4">
+    <div wire:loading.flex wire:target="search, selectedCategory, selectCategory" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4">
         @for($i = 0; $i < 8; $i++)
             <div class="col">
                 <div class="skeleton-card">
