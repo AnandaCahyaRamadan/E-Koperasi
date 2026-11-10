@@ -960,7 +960,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     border-radius: 50rem !important;
 }
 
-/* Toastr Notification Theme */
+/* Toastr Notification Theme - Modern Light & Fresh Card */
 #toast-container {
     z-index: 999999 !important;
     pointer-events: none;
@@ -974,69 +974,110 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 #toast-container > div {
     pointer-events: auto !important;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-    border-radius: 12px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important;
-    opacity: 0.98 !important;
-    padding: 16px 20px 16px 54px !important; /* 54px ensures icon never overlaps text */
+    border-radius: 14px !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 5px solid #16834a !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    opacity: 1 !important;
+    padding: 16px 20px 16px 54px !important;
     font-size: 0.88rem !important;
     width: 360px !important;
     max-width: calc(100vw - 32px) !important;
     background-position: 18px 18px !important;
     background-size: 22px 22px !important;
     line-height: 1.45 !important;
+    transition: all 0.25s ease-in-out !important;
+}
+
+#toast-container > div:hover {
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    opacity: 1 !important;
 }
 
 #toast-container .toast-title {
     font-weight: 700 !important;
     font-size: 0.95rem !important;
-    margin-bottom: 4px !important;
-    color: #ffffff !important;
+    margin-bottom: 3px !important;
+    color: #0f172a !important;
 }
 
 #toast-container .toast-message {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
     word-break: break-word !important;
-    color: #ffffff !important;
+    color: #475569 !important;
 }
 
 #toast-container .toast-close-button {
-    font-size: 1.25rem !important;
-    opacity: 0.75 !important;
-    top: -2px !important;
+    font-size: 1.3rem !important;
+    opacity: 0.55 !important;
+    top: -4px !important;
     right: 2px !important;
     text-shadow: none !important;
-    color: inherit !important;
+    color: #94a3b8 !important;
 }
 
 #toast-container .toast-close-button:hover {
     opacity: 1 !important;
+    color: #1e293b !important;
 }
 
+/* Success Toast - Fresh Koperasi Green */
 #toast-container > .toast-success {
-    background-color: var(--kop-primary) !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    border-left: 5px solid #16834a !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316834a'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E") !important;
+}
+#toast-container > .toast-success .toast-title {
+    color: #16834a !important;
 }
 
-#toast-container > .toast-error {
-    background-color: var(--kop-danger) !important;
-    color: #ffffff !important;
-}
-
-#toast-container > .toast-warning {
-    background-color: var(--kop-yellow) !important;
-    color: #252B33 !important;
-}
-
-#toast-container > .toast-warning .toast-title,
-#toast-container > .toast-warning .toast-message,
-#toast-container > .toast-warning .toast-close-button {
-    color: #252B33 !important;
-}
-
+/* Info Toast - Styled in Elegant Koperasi Green */
 #toast-container > .toast-info {
-    background-color: #0d6efd !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    border-left: 5px solid #16834a !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316834a'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E") !important;
+}
+#toast-container > .toast-info .toast-title {
+    color: #16834a !important;
+}
+
+/* Error Toast - Soft Crisp Red */
+#toast-container > .toast-error {
+    background-color: #ffffff !important;
+    border-left: 5px solid #dc2626 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dc2626'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E") !important;
+}
+#toast-container > .toast-error .toast-title {
+    color: #dc2626 !important;
+}
+
+/* Warning Toast - Warm Amber */
+#toast-container > .toast-warning {
+    background-color: #ffffff !important;
+    border-left: 5px solid #f59e0b !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d97706'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E") !important;
+}
+#toast-container > .toast-warning .toast-title {
+    color: #d97706 !important;
+}
+
+/* Toast Progress Bar */
+#toast-container .toast-progress {
+    height: 3px !important;
+    opacity: 0.75 !important;
+}
+#toast-container > .toast-success .toast-progress,
+#toast-container > .toast-info .toast-progress {
+    background-color: #16834a !important;
+}
+#toast-container > .toast-error .toast-progress {
+    background-color: #dc2626 !important;
+}
+#toast-container > .toast-warning .toast-progress {
+    background-color: #f59e0b !important;
 }
 
 /* Toast Mobile Screen Responsiveness */
@@ -1104,6 +1145,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .btn-action-view {
     width: 32px;
     height: 32px;
+    margin: 0 3px;
     border-radius: 8px;
     display: inline-flex;
     align-items: center;
@@ -1158,8 +1200,72 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 /* ==========================================================================
-   GLOBAL FIX: ELIMINATE BLUE FOCUS RING / PERSISTENT HOVER AFTER CLICK
+   GLOBAL FIX: ELIMINATE BLUE FOCUS RING / PERSISTENT HOVER / ACTIVE COLOR
    ========================================================================== */
+*:focus,
+*:focus-visible,
+*:active {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Dropdown Menus & Items */
+.dropdown-menu {
+    border-radius: 12px !important;
+    padding: 6px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dropdown-item {
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    color: #334155 !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--kop-primary-light) !important;
+    color: var(--kop-primary) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-item:active,
+.dropdown-item.active {
+    background-color: var(--kop-primary) !important;
+    color: #ffffff !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-item:active i,
+.dropdown-item.active i {
+    color: #ffffff !important;
+}
+
+.dropdown-item.text-danger {
+    color: #dc2626 !important;
+}
+
+.dropdown-item.text-danger:hover,
+.dropdown-item.text-danger:focus {
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-item.text-danger:active {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* All Buttons, Links, Inputs: zero blue outline or glow */
 button:focus,
 button:focus-visible,
 button:active:focus,
@@ -1167,10 +1273,15 @@ button:active:focus,
 .btn:focus-visible,
 .btn:active:focus,
 .btn-check:focus + .btn,
+.btn-check:active + .btn,
+.btn:active,
+.btn.active,
 a:focus,
 a:focus-visible,
+a:active,
 .page-link:focus,
 .page-link:focus-visible,
+.page-link:active,
 .cat-pill:focus,
 .cat-pill:focus-visible,
 .cat-pill:active:focus,
@@ -1185,12 +1296,26 @@ a:focus-visible,
 .dropdown-toggle:focus,
 .dropdown-toggle:focus-visible,
 .btn-close:focus,
-.btn-close:focus-visible {
+.btn-close:focus-visible,
+.form-check-input:focus {
     outline: none !important;
     box-shadow: none !important;
 }
 
-/* For Action Buttons - preserve clean state, zero blue glow */
+/* Form Controls Focus: Brand Green instead of Bootstrap Blue */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: #16834a !important;
+    box-shadow: 0 0 0 3px rgba(22, 131, 74, 0.18) !important;
+}
+
+.form-check-input:checked {
+    background-color: #16834a !important;
+    border-color: #16834a !important;
+}
+
+/* Action Buttons: zero blue glow */
 .btn-action-edit:focus,
 .btn-action-edit:active {
     background-color: #f0fdf4 !important;
@@ -1215,7 +1340,7 @@ a:focus-visible,
     box-shadow: none !important;
 }
 
-/* Category Pills - zero blue outline on focus */
+/* Category Pills: zero blue outline on focus */
 .cat-pill:focus {
     outline: none !important;
     box-shadow: none !important;
@@ -1228,9 +1353,16 @@ a:focus-visible,
     box-shadow: 0 4px 12px rgba(22, 131, 74, 0.25) !important;
 }
 
-/* Pagination links - no blue halo */
+/* Pagination links: no blue halo */
 .page-link:focus,
-.page-link:focus-visible {
+.page-link:focus-visible,
+.page-link:active {
     outline: none !important;
     box-shadow: none !important;
+}
+
+/* Selection: Brand Green Tint */
+::selection {
+    background-color: #bbf7d0 !important;
+    color: #14532d !important;
 }

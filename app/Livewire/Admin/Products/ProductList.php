@@ -58,7 +58,7 @@ class ProductList extends Component
         $name = $product->name;
         $product->delete();
         session()->flash('success', "Produk {$name} berhasil dihapus.");
-        $this->dispatch('toast', ['type' => 'info', 'message' => "Produk {$name} berhasil dihapus."]);
+        $this->dispatch('toast', ['type' => 'success', 'message' => "Produk {$name} berhasil dihapus."]);
     }
 
     public function toggleActive($id)

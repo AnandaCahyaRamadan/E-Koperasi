@@ -47,7 +47,7 @@
     </div>
 
     <!-- Table -->
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
             <div class="d-flex flex-column flex-sm-row gap-2" style="max-width: 500px; width: 100%;">
                 <div class="input-group">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th>Kode</th>
@@ -111,8 +111,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $products->links() }}
+        <div class="mt-3">
+            {{ $products->links('partials.pagination') }}
         </div>
     </div>
 </div>

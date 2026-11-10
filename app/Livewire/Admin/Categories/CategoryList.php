@@ -13,6 +13,7 @@ class CategoryList extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
+    public $perPage = 10;
     public $categoryId;
     public $name = '';
     public $icon = 'bi-tag';
@@ -104,7 +105,7 @@ class CategoryList extends Component
                 });
             })
             ->latest()
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.categories.category-list', [
             'categories' => $categories,

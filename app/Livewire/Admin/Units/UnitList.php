@@ -12,6 +12,7 @@ class UnitList extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
+    public $perPage = 10;
     public $unitId;
     public $name = '';
     public $symbol = '';
@@ -95,7 +96,7 @@ class UnitList extends Component
                 });
             })
             ->orderBy('name')
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.units.unit-list', [
             'units' => $units,

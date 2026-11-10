@@ -396,7 +396,7 @@
 
     // Automatically clear persistent focus / outline after mouse clicks on buttons and links
     document.addEventListener('mouseup', function(e) {
-        const el = e.target.closest('button, .btn, .cat-pill, .page-link, .btn-action-edit, .btn-action-delete, .btn-action-view, [role="button"]');
+        const el = e.target.closest('button, .btn, .cat-pill, .page-link, .btn-action-edit, .btn-action-delete, .btn-action-view, [role="button"], .dropdown-item, a');
         if (el) {
             el.blur();
         }

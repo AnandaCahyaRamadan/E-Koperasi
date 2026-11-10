@@ -6,52 +6,119 @@
             <p class="text-muted small mb-0">Kelola inventaris barang dagangan, penetapan harga jual, dan status ketersediaan.</p>
         </div>
         <div>
-            <a href="{{ route('admin.products.create') }}" class="btn btn-kop-primary fw-semibold">
+            <a href="{{ route('admin.products.create') }}" class="btn btn-kop-primary fw-semibold shadow-sm">
                 <i class="bi bi-plus-lg me-1"></i> Tambah Produk Baru
             </a>
         </div>
     </div>
 
-    <!-- Filter Card -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
-        <div class="row g-2 align-items-center">
-            <div class="col-md-7">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control border-start-0 ps-2" placeholder="Cari nama, SKU/kode, atau deskripsi...">
-                    @if($search)
-                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('search', '')">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </button>
-                    @endif
+    <!-- Products DataTable Card -->
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        <!-- DataTables Controls Header -->
+        <div class="row align-items-center mb-3 g-2">
+            <div class="col-sm-5 col-md-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted fw-semibold text-nowrap">Tampilkan</span>
+                    <select wire:model.live="perPage" class="form-select form-select-sm w-auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="small text-muted fw-semibold text-nowrap">baris</span>
                 </div>
             </div>
-            <div class="col-md-5">
-                <select wire:model.live="selectedCategory" class="form-select">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
+            <div class="col-sm-7 col-md-8">
+                <div class="d-flex align-items-center justify-content-sm-end gap-2 flex-wrap">
+                    <div class="w-auto">
+                        <select wire:model.live="selectedCategory" class="form-select form-select-sm">
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm" style="max-width: 260px;">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari produk...">
+                        @if($search)
+                            <button class="btn btn-light border border-start-0 text-muted" wire:click="$set('search', '')">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Products Table -->
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+        <!-- Table -->
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th style="width: 70px;">Foto</th>
-                        <th>Kode / SKU</th>
-                        <th>Nama Produk</th>
+                        <th wire:click="sortBy('code')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Kode / SKU</span>
+                                @if($sortField === 'code')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('name')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Nama Produk</span>
+                                @if($sortField === 'name')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
                         <th>Kategori</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
-                        <th>Stok</th>
-                        <th>Status</th>
-                        <th class="text-center" style="width: 140px;">Aksi</th>
+                        <th wire:click="sortBy('purchase_price')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Harga Beli</span>
+                                @if($sortField === 'purchase_price')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('sell_price')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Harga Jual</span>
+                                @if($sortField === 'sell_price')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('stock')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Stok</span>
+                                @if($sortField === 'stock')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('is_active')" style="cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between gap-1">
+                                <span>Status</span>
+                                @if($sortField === 'is_active')
+                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
+                                @else
+                                    <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="small">
@@ -95,7 +162,7 @@
                                 </button>
                             </td>
                             <td class="text-center">
-                                <div class="d-flex align-items-center justify-content-center gap-1.5">
+                                <div class="d-flex align-items-center justify-content-center gap-2">
                                     <a href="{{ route('admin.products.edit', $prod->id) }}" class="btn-action-edit" title="Edit Produk">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -119,8 +186,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $products->links() }}
+        <div class="mt-3">
+            {{ $products->links('partials.pagination') }}
         </div>
     </div>
 </div>

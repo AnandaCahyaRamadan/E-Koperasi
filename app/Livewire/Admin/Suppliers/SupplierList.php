@@ -12,6 +12,7 @@ class SupplierList extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
+    public $perPage = 10;
     public $supplierId;
     public $name = '';
     public $code = '';
@@ -115,7 +116,7 @@ class SupplierList extends Component
                 });
             })
             ->latest()
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.suppliers.supplier-list', [
             'suppliers' => $suppliers,

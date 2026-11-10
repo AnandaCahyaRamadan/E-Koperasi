@@ -12,19 +12,38 @@
     </div>
 
     <!-- Categories List Table -->
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
-            <div class="input-group" style="max-width: 320px;">
-                <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari kategori...">
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        <!-- DataTables Controls Header -->
+        <div class="row align-items-center mb-3 g-2">
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted fw-semibold text-nowrap">Tampilkan</span>
+                    <select wire:model.live="perPage" class="form-select form-select-sm w-auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="small text-muted fw-semibold text-nowrap">baris</span>
+                </div>
             </div>
-            <div class="text-muted small">
-                Total: <span class="fw-bold text-dark">{{ $categories->total() }}</span> kategori
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center justify-content-sm-end gap-2">
+                    <div class="input-group input-group-sm" style="max-width: 260px;">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari kategori...">
+                        @if($search)
+                            <button class="btn btn-light border border-start-0 text-muted" wire:click="$set('search', '')">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th style="width: 50px;">Icon</th>
@@ -54,7 +73,7 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <div class="d-flex align-items-center justify-content-center gap-1.5">
+                                <div class="d-flex align-items-center justify-content-center gap-2">
                                     <button type="button" wire:click="openEditModal({{ $cat->id }})" class="btn-action-edit" title="Edit Kategori">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
@@ -76,8 +95,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $categories->links() }}
+        <div class="mt-3">
+            {{ $categories->links('partials.pagination') }}
         </div>
     </div>
 
