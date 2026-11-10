@@ -15,6 +15,34 @@ class ProductList extends Component
 
     public $search = '';
     public $selectedCategory = '';
+    public $perPage = 10;
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
 
     public function deleteProduct($id)
     {
@@ -46,7 +74,7 @@ class ProductList extends Component
     {
         $categories = Category::all();
 
-        $query = Product::with(['category', 'unit'])->latest();
+        $query = Product::with(['category', 'unit']);
 
         if (!empty($this->selectedCategory)) {
             $query->where('category_id', $this->selectedCategory);
@@ -56,7 +84,13 @@ class ProductList extends Component
             $query->search($this->search);
         }
 
-        $products = $query->paginate(12);
+        if (in_array($this->sortField, ['code', 'name', 'purchase_price', 'sell_price', 'stock', 'is_active'])) {
+            $query->orderBy($this->sortField, $this->sortDirection);
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate($this->perPage);
 
         return view('livewire.admin.products.product-list', [
             'categories' => $categories,

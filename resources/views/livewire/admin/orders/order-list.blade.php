@@ -89,8 +89,8 @@
                             <td><span class="badge {{ $ord->payment_status_badge_class }}">{{ $ord->payment_status_label }}</span></td>
                             <td><span class="badge {{ $ord->status_badge_class }}">{{ $ord->status_label }}</span></td>
                             <td class="text-center">
-                                <a href="{{ route('admin.orders.detail', $ord->id) }}" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size: 0.72rem;">
-                                    Detail
+                                <a href="{{ route('admin.orders.detail', $ord->id) }}" class="btn-action-view" title="Lihat Rincian Pesanan">
+                                    <i class="bi bi-eye"></i>
                                 </a>
                             </td>
                         </tr>

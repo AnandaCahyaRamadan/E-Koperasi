@@ -3,10 +3,15 @@
 namespace App\Livewire\Admin\Suppliers;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Supplier;
 
 class SupplierList extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search = '';
     public $supplierId;
     public $name = '';
     public $code = '';
@@ -16,6 +21,11 @@ class SupplierList extends Component
     public $address = '';
     public $is_active = true;
     public $showModal = false;
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function openCreateModal()
     {
@@ -94,7 +104,18 @@ class SupplierList extends Component
 
     public function render()
     {
-        $suppliers = Supplier::withCount('purchases')->latest()->get();
+        $suppliers = Supplier::withCount('purchases')
+            ->when($this->search, function ($q) {
+                $q->where(function ($sub) {
+                    $sub->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('code', 'like', '%' . $this->search . '%')
+                        ->orWhere('contact_person', 'like', '%' . $this->search . '%')
+                        ->orWhere('phone', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->latest()
+            ->paginate(10);
 
         return view('livewire.admin.suppliers.supplier-list', [
             'suppliers' => $suppliers,

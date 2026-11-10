@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk - {{ \App\Models\Setting::get('koperasi_name', 'E-Koperasi') }}</title>
-    <!-- Bootstrap 5 CSS (Offline) -->
-    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    @include('partials.styles-common')
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center min-vh-100 py-4">
 
@@ -23,29 +20,7 @@
 
     <!-- Login Card -->
     <div class="card card-custom p-4 shadow-sm border-0">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show small" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show small" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-danger small mb-3">
-                <ul class="mb-0 ps-3">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.flash-toasts')
 
         <form action="{{ route('login.post') }}" method="POST">
             @csrf
@@ -120,6 +95,7 @@
     }
 </script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+@include('partials.scripts-common')
 </body>
 </html>
 

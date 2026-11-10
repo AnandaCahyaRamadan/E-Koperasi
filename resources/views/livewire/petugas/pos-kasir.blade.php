@@ -62,8 +62,8 @@
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
                     <h6 class="fw-bold text-dark mb-0"><i class="bi bi-calculator me-1 text-kop-primary"></i>Transaksi Kasir</h6>
                     @if(!empty($posCart))
-                        <button type="button" wire:click="clearCart" class="btn btn-outline-danger btn-sm py-0 px-2" style="font-size: 0.72rem;">
-                            Batal
+                        <button type="button" wire:click="clearCart" class="btn btn-outline-danger btn-sm py-1 px-2.5 rounded-pill" style="font-size: 0.78rem;">
+                            <i class="bi bi-trash3 me-1"></i>Batal
                         </button>
                     @endif
                 </div>

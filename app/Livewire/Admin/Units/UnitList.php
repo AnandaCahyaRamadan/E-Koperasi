@@ -3,15 +3,25 @@
 namespace App\Livewire\Admin\Units;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Unit;
 
 class UnitList extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search = '';
     public $unitId;
     public $name = '';
     public $symbol = '';
     public $description = '';
     public $showModal = false;
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function openCreateModal()
     {
@@ -76,7 +86,16 @@ class UnitList extends Component
 
     public function render()
     {
-        $units = Unit::withCount('products')->orderBy('name')->get();
+        $units = Unit::withCount('products')
+            ->when($this->search, function ($q) {
+                $q->where(function ($sub) {
+                    $sub->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('symbol', 'like', '%' . $this->search . '%')
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orderBy('name')
+            ->paginate(10);
 
         return view('livewire.admin.units.unit-list', [
             'units' => $units,

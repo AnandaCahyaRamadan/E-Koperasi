@@ -12,6 +12,16 @@
     </div>
 
     <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+            <div class="input-group" style="max-width: 320px;">
+                <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari supplier...">
+            </div>
+            <div class="text-muted small">
+                Total: <span class="fw-bold text-dark">{{ $suppliers->total() }}</span> supplier
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light small text-muted">
@@ -39,15 +49,17 @@
                                 <span class="badge bg-light text-dark border">{{ $sup->purchases_count }} transaksi</span>
                             </td>
                             <td class="text-center">
-                                <button type="button" wire:click="openEditModal({{ $sup->id }})" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 0.72rem;">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" 
-                                        wire:click="deleteSupplier({{ $sup->id }})" 
-                                        wire:confirm="Yakin ingin menghapus supplier {{ $sup->name }}?"
-                                        class="btn btn-outline-danger btn-sm py-0 px-2 ms-1" style="font-size: 0.72rem;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <div class="d-flex align-items-center justify-content-center gap-1.5">
+                                    <button type="button" wire:click="openEditModal({{ $sup->id }})" class="btn-action-edit" title="Edit Supplier">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button type="button" 
+                                            wire:click="deleteSupplier({{ $sup->id }})" 
+                                            wire:confirm="Yakin ingin menghapus supplier {{ $sup->name }}?"
+                                            class="btn-action-delete" title="Hapus Supplier">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -57,6 +69,10 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $suppliers->links() }}
         </div>
     </div>
 

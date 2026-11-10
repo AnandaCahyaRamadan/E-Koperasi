@@ -114,7 +114,7 @@
                                 @else
                                     <span class="text-muted small">Menunggu Bayar</span>
                                 @endif
-                                <a href="{{ route('petugas.orders.detail', $ord->id) }}" class="btn btn-outline-secondary btn-sm py-0 px-2 ms-1" style="font-size: 0.72rem;" title="Lihat Rincian">
+                                <a href="{{ route('petugas.orders.detail', $ord->id) }}" class="btn-action-view ms-1" title="Lihat Rincian">
                                     <i class="bi bi-eye"></i>
                                 </a>
                             </td>

@@ -48,6 +48,24 @@
 
     <!-- Table -->
     <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+            <div class="d-flex flex-column flex-sm-row gap-2" style="max-width: 500px; width: 100%;">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari nama atau kode produk...">
+                </div>
+                <select wire:model.live="category_id" class="form-select bg-light" style="max-width: 180px;">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="text-muted small">
+                Menampilkan <span class="fw-bold text-dark">{{ $products->total() }}</span> produk
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light small text-muted">
@@ -64,7 +82,7 @@
                     </tr>
                 </thead>
                 <tbody class="small">
-                    @foreach($products as $p)
+                    @forelse($products as $p)
                         @php
                             $subHpp = $p->stock * $p->purchase_price;
                             $subSell = $p->stock * $p->sell_price;
@@ -84,9 +102,17 @@
                             <td class="text-end fw-semibold text-dark">Rp {{ number_format($subSell, 0, ',', '.') }}</td>
                             <td class="text-end fw-bold text-success">Rp {{ number_format($margin, 0, ',', '.') }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-5">Tidak ada data produk yang cocok.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $products->links() }}
         </div>
     </div>
 </div>

@@ -4,12 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>@yield('title', 'E-Koperasi') - Koperasi Pegawai</title>
-    <!-- Bootstrap 5 CSS (Offline) -->
-    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Bootstrap Icons (Offline) -->
-    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet">
-    <!-- Custom Style -->
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    @include('partials.styles-common')
     @livewireStyles
     @stack('styles')
 </head>
@@ -100,21 +95,7 @@
         </div>
     </nav>
 
-    <!-- Global Alert / Messages -->
-    <div class="container mt-3">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show card-custom border-0" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show card-custom border-0" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-    </div>
+    @include('partials.flash-toasts')
 
     <!-- Main Content -->
     <main class="container my-3">

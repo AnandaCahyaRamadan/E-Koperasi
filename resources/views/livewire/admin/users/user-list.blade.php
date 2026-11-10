@@ -72,13 +72,18 @@
                             <td>{{ $u->employee_id ?: '-' }}</td>
                             <td>{{ $u->phone ?: '-' }}</td>
                             <td>
-                                <button type="button" wire:click="toggleActive({{ $u->id }})" class="btn btn-sm py-0 px-2 rounded-pill {{ $u->is_active ? 'btn-success' : 'btn-secondary' }}" style="font-size: 0.72rem;">
+                                <button type="button" 
+                                        wire:click="toggleActive({{ $u->id }})" 
+                                        class="badge {{ $u->is_active ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-secondary-subtle text-secondary border border-secondary-subtle' }} rounded-pill px-2.5 py-1.5 fw-semibold border-0" 
+                                        style="cursor: pointer; font-size: 0.75rem;" 
+                                        title="Klik untuk ubah status">
+                                    <i class="bi {{ $u->is_active ? 'bi-check-circle-fill' : 'bi-dash-circle' }} me-1"></i>
                                     {{ $u->is_active ? 'Aktif' : 'Non-Aktif' }}
                                 </button>
                             </td>
                             <td class="text-center">
-                                <button type="button" wire:click="openEditModal({{ $u->id }})" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 0.72rem;" title="Edit Pengguna">
-                                    <i class="bi bi-pencil"></i>
+                                <button type="button" wire:click="openEditModal({{ $u->id }})" class="btn-action-edit" title="Edit Pengguna">
+                                    <i class="bi bi-pencil-square"></i>
                                 </button>
                             </td>
                         </tr>

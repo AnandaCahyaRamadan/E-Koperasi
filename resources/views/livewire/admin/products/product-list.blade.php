@@ -85,20 +85,27 @@
                                 @endif
                             </td>
                             <td>
-                                <button type="button" wire:click="toggleActive({{ $prod->id }})" class="btn btn-sm py-0 px-2 rounded-pill {{ $prod->is_active ? 'btn-success' : 'btn-secondary' }}" style="font-size: 0.72rem;">
+                                <button type="button" 
+                                        wire:click="toggleActive({{ $prod->id }})" 
+                                        class="badge {{ $prod->is_active ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-secondary-subtle text-secondary border border-secondary-subtle' }} rounded-pill px-2.5 py-1.5 fw-semibold border-0" 
+                                        style="cursor: pointer; font-size: 0.75rem;" 
+                                        title="Klik untuk ubah status">
+                                    <i class="bi {{ $prod->is_active ? 'bi-check-circle-fill' : 'bi-dash-circle' }} me-1"></i>
                                     {{ $prod->is_active ? 'Aktif' : 'Non-Aktif' }}
                                 </button>
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('admin.products.edit', $prod->id) }}" class="btn btn-outline-primary btn-sm py-0 px-2" style="font-size: 0.75rem;" title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <button type="button" 
-                                        wire:click="deleteProduct({{ $prod->id }})" 
-                                        wire:confirm="Yakin ingin menghapus atau menonaktifkan produk {{ $prod->name }}?"
-                                        class="btn btn-outline-danger btn-sm py-0 px-2 ms-1" style="font-size: 0.75rem;" title="Hapus">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <div class="d-flex align-items-center justify-content-center gap-1.5">
+                                    <a href="{{ route('admin.products.edit', $prod->id) }}" class="btn-action-edit" title="Edit Produk">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button type="button" 
+                                            wire:click="deleteProduct({{ $prod->id }})" 
+                                            wire:confirm="Yakin ingin menghapus atau menonaktifkan produk {{ $prod->name }}?"
+                                            class="btn-action-delete" title="Hapus Produk">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty

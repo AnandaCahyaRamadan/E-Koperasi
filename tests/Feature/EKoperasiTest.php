@@ -96,4 +96,13 @@ class EKoperasiTest extends TestCase
         $response->assertSee('vendor/toastr/toastr.min.js');
         $response->assertSee('vendor/flatpickr/flatpickr.min.js');
     }
+
+    public function test_flash_messages_use_toaster_and_no_inline_alert(): void
+    {
+        $response = $this->withSession(['success' => 'Anda telah berhasil logout.'])->get('/login');
+        $response->assertStatus(200);
+        $response->assertSee('Anda telah berhasil logout.');
+        $response->assertDontSee('alert alert-success');
+        $response->assertSee('toastr');
+    }
 }

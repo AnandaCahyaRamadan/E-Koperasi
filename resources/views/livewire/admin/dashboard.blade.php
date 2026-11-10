@@ -161,8 +161,8 @@
                             <td class="fw-bold text-kop-primary">Rp {{ number_format($ord->final_amount, 0, ',', '.') }}</td>
                             <td><span class="badge {{ $ord->status_badge_class }}">{{ $ord->status_label }}</span></td>
                             <td>
-                                <a href="{{ route('admin.orders.detail', $ord->id) }}" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size: 0.72rem;">
-                                    Detail
+                                <a href="{{ route('admin.orders.detail', $ord->id) }}" class="btn-action-view" title="Detail Pesanan">
+                                    <i class="bi bi-eye"></i>
                                 </a>
                             </td>
                         </tr>
@@ -179,44 +179,72 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('salesChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: {!! $salesLabels !!},
-                    datasets: [{
-                        label: 'Penjualan (Rp)',
-                        data: {!! $salesData !!},
-                        borderColor: '#16834A',
-                        backgroundColor: 'rgba(22, 131, 74, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: '#16834A',
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return 'Rp ' + value.toLocaleString('id-ID');
-                                }
+    let adminSalesChartInstance = null;
+
+    function renderAdminSalesChart() {
+        const canvas = document.getElementById('salesChart');
+        if (!canvas) return;
+
+        if (adminSalesChartInstance) {
+            adminSalesChartInstance.destroy();
+            adminSalesChartInstance = null;
+        }
+
+        const ctx = canvas.getContext('2d');
+        adminSalesChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {!! $salesLabels !!},
+                datasets: [{
+                    label: 'Penjualan (Rp)',
+                    data: {!! $salesData !!},
+                    borderColor: '#16834A',
+                    backgroundColor: 'rgba(22, 131, 74, 0.08)',
+                    borderWidth: 2.5,
+                    tension: 0.35,
+                    fill: true,
+                    pointBackgroundColor: '#16834A',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Penjualan: Rp ' + Number(context.raw || 0).toLocaleString('id-ID');
                             }
                         }
                     }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        },
+                        grid: {
+                            color: '#f1f5f9'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
                 }
-            });
-        }
-    });
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderAdminSalesChart);
+    document.addEventListener('livewire:navigated', renderAdminSalesChart);
 </script>
 @endpush
 

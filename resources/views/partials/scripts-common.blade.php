@@ -1,21 +1,17 @@
 <!-- jQuery (Offline) -->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 
-<!-- Toastr CSS & JS (Offline) -->
-<link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}">
+<!-- Toastr JS (Offline) -->
 <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
 
-<!-- SweetAlert2 CSS & JS (Offline) -->
-<link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.min.css') }}">
+<!-- SweetAlert2 JS (Offline) -->
 <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
-<!-- Flatpickr Datepicker CSS & JS (Offline) -->
-<link rel="stylesheet" href="{{ asset('vendor/flatpickr/flatpickr.min.css') }}">
+<!-- Flatpickr Datepicker JS (Offline) -->
 <script src="{{ asset('vendor/flatpickr/flatpickr.min.js') }}"></script>
 <script src="{{ asset('vendor/flatpickr/id.js') }}"></script>
 
-<!-- DataTables BS5 CSS & JS (Offline) -->
-<link rel="stylesheet" href="{{ asset('vendor/datatables/css/dataTables.bootstrap5.min.css') }}">
+<!-- DataTables BS5 JS (Offline) -->
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('vendor/datatables/js/dataTables.bootstrap5.min.js') }}"></script>
 
@@ -27,7 +23,7 @@
             "debug": false,
             "newestOnTop": true,
             "progressBar": true,
-            "positionClass": "toast-top-right",
+            "positionClass": "toast-bottom-right",
             "preventDuplicates": false,
             "onclick": null,
             "showDuration": "300",
@@ -55,7 +51,14 @@
     });
 
     // Helper functions for easy window-level calling
+    window._shownToastKeys = window._shownToastKeys || new Set();
     window.showToast = function(type, message, title = '') {
+        if (!message) return;
+        const key = `${type}:${title}:${message}`;
+        if (window._shownToastKeys.has(key)) return;
+        window._shownToastKeys.add(key);
+        setTimeout(() => window._shownToastKeys.delete(key), 1500);
+
         if (typeof toastr !== 'undefined' && toastr[type]) {
             toastr[type](message, title);
         } else if (typeof SwalToast !== 'undefined') {
@@ -230,9 +233,67 @@
                 toastr[type](message, title);
             }
         });
+
+        // Native Livewire 3 Hook for wire:confirm -> SweetAlert2!
+        Livewire.hook('directive.init', ({ el, directive }) => {
+            if (directive.value === 'confirm') {
+                let message = directive.expression || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+                message = message.replaceAll('\\n', '\n');
+                
+                el.__livewire_confirm = (action, instead) => {
+                    Swal.fire({
+                        title: el.getAttribute('data-swal-title') || 'Konfirmasi Tindakan',
+                        text: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#DC3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ya, Lanjutkan',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            action();
+                        } else if (typeof instead === 'function') {
+                            instead();
+                        }
+                    });
+                };
+                el.__livewire_confirm.__isSwal = true;
+            }
+        });
     });
 
-    // Delegated click handler for SweetAlert2 Confirmation Dialogs
+    // Guard on click capture to ensure dynamic elements also use SweetAlert2
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('[wire\\:confirm]');
+        if (el && el.__livewire_confirm && !el.__livewire_confirm.__isSwal) {
+            const rawMsg = el.getAttribute('wire:confirm') || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+            const title = el.getAttribute('data-swal-title') || 'Konfirmasi Tindakan';
+            el.__livewire_confirm = (action, instead) => {
+                Swal.fire({
+                    title: title,
+                    text: rawMsg,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DC3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Lanjutkan',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        action();
+                    } else if (typeof instead === 'function') {
+                        instead();
+                    }
+                });
+            };
+            el.__livewire_confirm.__isSwal = true;
+        }
+    }, true);
+
+    // Delegated click handler for SweetAlert2 Confirmation Dialogs (custom attributes)
     document.addEventListener('click', function(e) {
         const confirmBtn = e.target.closest('[data-swal-confirm]');
         if (confirmBtn) {
@@ -308,4 +369,36 @@
             }
         })();
     @endif
+
+    @if(session('status'))
+        (function() {
+            const msg = "{{ addslashes(session('status')) }}";
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => window.showToast('info', msg, 'Informasi'));
+            } else {
+                window.showToast('info', msg, 'Informasi');
+            }
+        })();
+    @endif
+
+    @if($errors->any())
+        (function() {
+            @foreach($errors->all() as $err)
+                const err_{{ $loop->index }} = "{{ addslashes($err) }}";
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => window.showToast('error', err_{{ $loop->index }}, 'Perhatian'));
+                } else {
+                    window.showToast('error', err_{{ $loop->index }}, 'Perhatian');
+                }
+            @endforeach
+        })();
+    @endif
+
+    // Automatically clear persistent focus / outline after mouse clicks on buttons and links
+    document.addEventListener('mouseup', function(e) {
+        const el = e.target.closest('button, .btn, .cat-pill, .page-link, .btn-action-edit, .btn-action-delete, .btn-action-view, [role="button"]');
+        if (el) {
+            el.blur();
+        }
+    });
 </script>

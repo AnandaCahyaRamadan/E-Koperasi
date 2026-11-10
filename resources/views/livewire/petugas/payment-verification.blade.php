@@ -8,11 +8,11 @@
     </div>
 
     <!-- Filter Buttons -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
-        <div class="row g-2 align-items-center">
-            <div class="col-md-6">
-                <span class="small fw-semibold text-muted me-2">Status:</span>
-                <div class="d-inline-flex gap-1 flex-wrap">
+    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white">
+        <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="small fw-semibold text-muted text-nowrap"><i class="bi bi-funnel me-1"></i>Status:</span>
+                <div class="d-flex gap-1 flex-wrap">
                     <button type="button" wire:click="$set('filterStatus', 'waiting_verification')" class="cat-pill {{ $filterStatus === 'waiting_verification' ? 'active' : '' }}">
                         <i class="bi bi-hourglass-split"></i> Menunggu Verifikasi
                     </button>
@@ -28,9 +28,9 @@
                 </div>
             </div>
 
-            <div class="col-md-6 text-md-end">
-                <span class="small fw-semibold text-muted me-2">Metode:</span>
-                <div class="d-inline-flex gap-1 flex-wrap">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="small fw-semibold text-muted text-nowrap">Metode:</span>
+                <div class="d-flex gap-1 flex-wrap">
                     <button type="button" wire:click="$set('filterMethod', 'all')" class="cat-pill {{ $filterMethod === 'all' ? 'active' : '' }}">Semua</button>
                     <button type="button" wire:click="$set('filterMethod', 'qris')" class="cat-pill {{ $filterMethod === 'qris' ? 'active' : '' }}"><i class="bi bi-qr-code"></i> QRIS</button>
                     <button type="button" wire:click="$set('filterMethod', 'cash')" class="cat-pill {{ $filterMethod === 'cash' ? 'active' : '' }}"><i class="bi bi-cash"></i> Tunai</button>
