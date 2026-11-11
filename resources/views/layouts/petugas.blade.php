@@ -94,12 +94,6 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-2 gap-sm-3 flex-shrink-0 ms-auto">
-                        <a href="{{ route('petugas.pos') }}" class="btn btn-sm btn-kop-primary fw-semibold text-nowrap d-flex align-items-center gap-1 shadow-sm px-2 px-sm-3">
-                            <i class="bi bi-plus-circle"></i>
-                            <span class="d-none d-md-inline">Transaksi Baru (POS)</span>
-                            <span class="d-md-none">POS</span>
-                        </a>
-
                         <div class="dropdown" x-data="{ open: false }" @click.outside="open = false">
                             <button class="btn btn-user-pill dropdown-toggle d-flex align-items-center gap-2 px-2 py-1" 
                                     type="button" 

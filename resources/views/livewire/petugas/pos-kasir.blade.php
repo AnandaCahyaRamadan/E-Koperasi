@@ -27,32 +27,34 @@
                 </div>
 
                 <!-- Products Grid -->
-                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-2 overflow-auto" style="max-height: 600px;">
-                    @forelse($products as $prod)
-                        <div class="col">
-                            <div wire:click="addToCart({{ $prod->id }})" 
-                                 class="pos-product-card d-flex flex-column {{ $prod->stock < 1 ? 'opacity-50 pointer-events-none' : '' }}" 
-                                 title="Klik untuk tambah ke transaksi">
-                                <div class="d-flex justify-content-between align-items-start mb-1">
-                                    <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">{{ $prod->code }}</span>
-                                    <span class="badge {{ $prod->stock > 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}" style="font-size: 0.65rem;">
-                                        {{ $prod->stock }} {{ $prod->unit?->symbol }}
-                                    </span>
-                                </div>
-                                <h6 class="fw-semibold text-dark small mb-1 text-truncate" title="{{ $prod->name }}">{{ $prod->name }}</h6>
-                                <div class="mt-auto pt-1 d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold text-kop-primary small">Rp {{ number_format($prod->sell_price, 0, ',', '.') }}</span>
-                                    <i class="bi bi-plus-circle-fill text-kop-primary fs-5"></i>
+                @if($products->isEmpty())
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
+                        <div class="small">Produk tidak ditemukan.</div>
+                    </div>
+                @else
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-2 overflow-auto" style="max-height: 600px;">
+                        @foreach($products as $prod)
+                            <div class="col">
+                                <div wire:click="addToCart({{ $prod->id }})" 
+                                     class="pos-product-card d-flex flex-column {{ $prod->stock < 1 ? 'opacity-50 pointer-events-none' : '' }}" 
+                                     title="Klik untuk tambah ke transaksi">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">{{ $prod->code }}</span>
+                                        <span class="badge {{ $prod->stock > 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}" style="font-size: 0.65rem;">
+                                            {{ $prod->stock }} {{ $prod->unit?->symbol }}
+                                        </span>
+                                    </div>
+                                    <h6 class="fw-semibold text-dark small mb-1 text-truncate" title="{{ $prod->name }}">{{ $prod->name }}</h6>
+                                    <div class="mt-auto pt-1 d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-kop-primary small">Rp {{ number_format($prod->sell_price, 0, ',', '.') }}</span>
+                                        <i class="bi bi-plus-circle-fill text-kop-primary fs-5"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @empty
-                        <div class="col-12 text-center text-muted py-5">
-                            <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                            Produk tidak ditemukan.
-                        </div>
-                    @endforelse
-                </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
 
