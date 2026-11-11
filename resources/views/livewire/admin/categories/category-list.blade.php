@@ -47,11 +47,11 @@
                 <thead class="table-light small text-muted">
                     <tr>
                         <th style="width: 50px;">Icon</th>
-                        <th>Nama Kategori</th>
-                        <th>Slug URL</th>
+                        @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Kategori'])
+                        @include('partials.datatable-th', ['field' => 'slug', 'label' => 'Slug URL'])
                         <th>Deskripsi</th>
-                        <th>Jumlah Produk</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'products_count', 'label' => 'Jumlah Produk'])
+                        @include('partials.datatable-th', ['field' => 'is_active', 'label' => 'Status'])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>

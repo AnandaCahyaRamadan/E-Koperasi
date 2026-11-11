@@ -4,17 +4,23 @@ namespace App\Livewire\Petugas;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
 class OrderManagement extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
     public $filterStatus = 'all';
     public $search = '';
+
+    public function updatingFilterStatus()
+    {
+        $this->resetPage();
+    }
 
     public function updateOrderStatus($orderId, $newStatus)
     {
@@ -64,7 +70,7 @@ class OrderManagement extends Component
 
     public function render()
     {
-        $query = Order::with(['user', 'items', 'delivery', 'latestPayment'])->latest();
+        $query = Order::with(['user', 'items', 'delivery', 'latestPayment']);
 
         if ($this->filterStatus !== 'all') {
             $query->where('status', $this->filterStatus);
@@ -80,7 +86,9 @@ class OrderManagement extends Component
             });
         }
 
-        $orders = $query->paginate(10);
+        $this->applySorting($query, ['order_number', 'created_at', 'order_type', 'final_amount', 'payment_status', 'status']);
+
+        $orders = $query->paginate($this->perPage);
 
         return view('livewire.petugas.order-management', [
             'orders' => $orders,

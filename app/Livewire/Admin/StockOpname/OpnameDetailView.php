@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin\StockOpname;
 
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\StockOpname;
 use App\Models\OpnameDetail;
 use App\Models\Product;
@@ -12,11 +14,18 @@ use Illuminate\Support\Facades\DB;
 
 class OpnameDetailView extends Component
 {
+    use WithPagination, WithDataTable;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $opnameId;
+    public $search = '';
 
     public function mount($id)
     {
         $this->opnameId = $id;
+        $this->sortField = 'id';
+        $this->sortDirection = 'asc';
     }
 
     public function approveOpname()
@@ -78,14 +87,28 @@ class OpnameDetailView extends Component
 
     public function render()
     {
-        $opname = StockOpname::with(['creator', 'approver', 'details.product.unit'])->findOrFail($this->opnameId);
+        $opname = StockOpname::with(['creator', 'approver', 'details'])->findOrFail($this->opnameId);
 
         $totalDifferenceUnits = $opname->details->sum('difference');
         $matchCount = $opname->details->where('difference', 0)->count();
         $mismatchCount = $opname->details->where('difference', '!=', 0)->count();
 
+        $detailsQuery = OpnameDetail::with('product.unit')
+            ->where('stock_opname_id', $opname->id);
+
+        if (!empty($this->search)) {
+            $detailsQuery->whereHas('product', function ($q) {
+                $q->where('name', 'like', "%{$this->search}%")
+                  ->orWhere('code', 'like', "%{$this->search}%");
+            });
+        }
+
+        $this->applySorting($detailsQuery, ['system_stock', 'physical_stock', 'difference', 'id'], 'id', 'asc');
+        $details = $detailsQuery->paginate($this->perPage);
+
         return view('livewire.admin.stock-opname.opname-detail-view', [
             'opname' => $opname,
+            'details' => $details,
             'totalDifferenceUnits' => $totalDifferenceUnits,
             'matchCount' => $matchCount,
             'mismatchCount' => $mismatchCount,

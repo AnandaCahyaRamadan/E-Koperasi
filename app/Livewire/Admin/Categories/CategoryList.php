@@ -4,27 +4,22 @@ namespace App\Livewire\Admin\Categories;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
 class CategoryList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
-    public $perPage = 10;
     public $categoryId;
     public $name = '';
     public $icon = 'bi-tag';
     public $description = '';
     public $is_active = true;
     public $showModal = false;
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
 
     public function openCreateModal()
     {
@@ -96,16 +91,17 @@ class CategoryList extends Component
 
     public function render()
     {
-        $categories = Category::withCount('products')
+        $query = Category::withCount('products')
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
                     $sub->where('name', 'like', '%' . $this->search . '%')
                         ->orWhere('description', 'like', '%' . $this->search . '%')
                         ->orWhere('slug', 'like', '%' . $this->search . '%');
                 });
-            })
-            ->latest()
-            ->paginate($this->perPage);
+            });
+
+        $this->applySorting($query, ['name', 'slug', 'products_count', 'is_active', 'created_at']);
+        $categories = $query->paginate($this->perPage);
 
         return view('livewire.admin.categories.category-list', [
             'categories' => $categories,

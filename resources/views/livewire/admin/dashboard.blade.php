@@ -130,23 +130,25 @@
     </div>
 
     <!-- Recent Transactions -->
-    <div class="card card-custom border-0 p-4 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-4 shadow-sm bg-white" style="border-radius: 16px;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="fw-bold text-dark mb-0"><i class="bi bi-receipt-cutoff text-kop-primary me-2"></i>Transaksi Terbaru Sistem</h6>
             <a href="{{ route('admin.orders.index') }}" class="small text-kop-primary fw-semibold text-decoration-none">Lihat Seluruh Transaksi</a>
         </div>
 
+        @include('partials.datatable-top', ['placeholder' => 'Cari No. Pesanan atau Pelanggan...', 'options' => [6, 10, 25, 50]])
+
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>No. Pesanan</th>
-                        <th>Tanggal</th>
+                        @include('partials.datatable-th', ['field' => 'order_number', 'label' => 'No. Pesanan'])
+                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'Tanggal'])
                         <th>Pelanggan</th>
-                        <th>Tipe</th>
-                        <th>Metode Bayar</th>
-                        <th>Total</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'order_type', 'label' => 'Tipe'])
+                        @include('partials.datatable-th', ['field' => 'payment_method', 'label' => 'Metode Bayar'])
+                        @include('partials.datatable-th', ['field' => 'final_amount', 'label' => 'Total'])
+                        @include('partials.datatable-th', ['field' => 'status', 'label' => 'Status'])
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -173,6 +175,10 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-3">
+            {{ $recentOrders->links('partials.pagination') }}
         </div>
     </div>
 </div>

@@ -4,11 +4,12 @@ namespace App\Livewire\Admin\Orders;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Order;
 
 class OrderList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -19,9 +20,15 @@ class OrderList extends Component
     public $startDate = '';
     public $endDate = '';
 
+    public function updatingFilterStatus() { $this->resetPage(); }
+    public function updatingFilterPayment() { $this->resetPage(); }
+    public function updatingFilterType() { $this->resetPage(); }
+    public function updatingStartDate() { $this->resetPage(); }
+    public function updatingEndDate() { $this->resetPage(); }
+
     public function render()
     {
-        $query = Order::with(['user', 'items', 'latestPayment', 'cashier'])->latest();
+        $query = Order::with(['user', 'items', 'latestPayment', 'cashier']);
 
         if ($this->filterStatus !== 'all') {
             $query->where('status', $this->filterStatus);
@@ -53,7 +60,9 @@ class OrderList extends Component
             });
         }
 
-        $orders = $query->paginate(12);
+        $this->applySorting($query, ['order_number', 'created_at', 'order_type', 'payment_method', 'final_amount', 'payment_status', 'status']);
+
+        $orders = $query->paginate($this->perPage);
 
         return view('livewire.admin.orders.order-list', [
             'orders' => $orders,

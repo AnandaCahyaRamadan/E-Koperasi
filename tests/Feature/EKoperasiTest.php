@@ -105,4 +105,52 @@ class EKoperasiTest extends TestCase
         $response->assertDontSee('alert alert-success');
         $response->assertSee('toastr');
     }
+
+    public function test_all_admin_and_petugas_tables_render_with_datatable_and_pagination(): void
+    {
+        $admin = User::whereHas('role', fn ($q) => $q->where('slug', 'admin'))->first();
+        if ($admin) {
+            $adminTableRoutes = [
+                '/admin/dashboard',
+                '/admin/products',
+                '/admin/categories',
+                '/admin/units',
+                '/admin/inventory',
+                '/admin/purchases',
+                '/admin/suppliers',
+                '/admin/stock-movements',
+                '/admin/stock-opname',
+                '/admin/orders',
+                '/admin/payments',
+                '/admin/reports/sales',
+                '/admin/reports/inventory',
+                '/admin/users',
+            ];
+
+            foreach ($adminTableRoutes as $url) {
+                $response = $this->actingAs($admin)->get($url);
+                $response->assertStatus(200);
+                $response->assertSee('datatable-custom');
+                $response->assertSee('Tampilkan');
+            }
+        }
+
+        $petugas = User::whereHas('role', fn ($q) => $q->where('slug', 'petugas'))->first();
+        if ($petugas) {
+            $petugasTableRoutes = [
+                '/petugas/dashboard',
+                '/petugas/payments',
+                '/petugas/orders',
+                '/petugas/products',
+                '/petugas/history',
+            ];
+
+            foreach ($petugasTableRoutes as $url) {
+                $response = $this->actingAs($petugas)->get($url);
+                $response->assertStatus(200);
+                $response->assertSee('datatable-custom');
+                $response->assertSee('Tampilkan');
+            }
+        }
+    }
 }

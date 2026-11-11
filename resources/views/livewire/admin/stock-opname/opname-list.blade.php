@@ -11,18 +11,20 @@
         </div>
     </div>
 
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        @include('partials.datatable-top', ['placeholder' => 'Cari No. Opname atau Pembuat...'])
+
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>No. Sesi Opname</th>
-                        <th>Tanggal Dibuat</th>
+                        @include('partials.datatable-th', ['field' => 'opname_number', 'label' => 'No. Sesi Opname'])
+                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'Tanggal Dibuat'])
                         <th>Dibuat Oleh</th>
                         <th>Total Item Diperiksa</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'status', 'label' => 'Status'])
                         <th>Disetujui Oleh</th>
-                        <th>Waktu Persetujuan</th>
+                        @include('partials.datatable-th', ['field' => 'approved_at', 'label' => 'Waktu Persetujuan'])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>
@@ -55,8 +57,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $opnames->links() }}
+        <div class="mt-3">
+            {{ $opnames->links('partials.pagination') }}
         </div>
     </div>
 </div>

@@ -4,17 +4,23 @@ namespace App\Livewire\Admin\Inventory;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Product;
 use App\Models\Category;
 
 class InventoryIndex extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
     public $filterStock = 'all'; // 'all', 'low', 'out'
+
+    public function updatingFilterStock()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -24,7 +30,7 @@ class InventoryIndex extends Component
         $lowStockCount = Product::lowStock()->count();
         $outOfStockCount = Product::where('stock', '<=', 0)->count();
 
-        $query = Product::with(['category', 'unit'])->latest();
+        $query = Product::with(['category', 'unit']);
 
         if ($this->filterStock === 'low') {
             $query->lowStock();
@@ -36,7 +42,9 @@ class InventoryIndex extends Component
             $query->search($this->search);
         }
 
-        $products = $query->paginate(12);
+        $this->applySorting($query, ['code', 'name', 'purchase_price', 'sell_price', 'stock', 'min_stock']);
+
+        $products = $query->paginate($this->perPage);
 
         return view('livewire.admin.inventory.inventory-index', [
             'products' => $products,

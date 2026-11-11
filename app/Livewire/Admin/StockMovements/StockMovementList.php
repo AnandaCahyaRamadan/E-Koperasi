@@ -4,12 +4,13 @@ namespace App\Livewire\Admin\StockMovements;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\StockMovement;
 use App\Models\Product;
 
 class StockMovementList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -17,9 +18,29 @@ class StockMovementList extends Component
     public $filterReference = 'all'; // 'all', 'purchase', 'order', 'opname', 'manual', 'initial'
     public $searchProduct = '';
 
+    public function mount()
+    {
+        $this->perPage = 15;
+    }
+
+    public function updatingSearchProduct()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterType()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterReference()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $query = StockMovement::with(['product.unit', 'user'])->latest();
+        $query = StockMovement::with(['product.unit', 'user']);
 
         if ($this->filterType !== 'all') {
             $query->where('type', $this->filterType);
@@ -36,7 +57,9 @@ class StockMovementList extends Component
             });
         }
 
-        $movements = $query->paginate(15);
+        $this->applySorting($query, ['created_at', 'type', 'reference_type', 'quantity', 'stock_after']);
+
+        $movements = $query->paginate($this->perPage);
 
         return view('livewire.admin.stock-movements.stock-movement-list', [
             'movements' => $movements,

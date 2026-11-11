@@ -26,7 +26,7 @@
         <h6 class="fw-bold text-dark mb-3">Input Hasil Penghitungan Fisik Lapangan</h6>
 
         <div class="table-responsive">
-            <table class="table table-bordered align-middle mb-0">
+            <table class="table table-bordered table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th style="width: 50px;" class="text-center">No</th>

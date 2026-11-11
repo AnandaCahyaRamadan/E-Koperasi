@@ -36,17 +36,19 @@
 
     <!-- Orders Table -->
     <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        @include('partials.datatable-top', ['showSearch' => false])
+
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Pesanan</th>
+                        @include('partials.datatable-th', ['field' => 'order_number', 'label' => 'Pesanan'])
                         <th>Pelanggan</th>
-                        <th>Layanan</th>
+                        @include('partials.datatable-th', ['field' => 'order_type', 'label' => 'Layanan'])
                         <th>Barang</th>
-                        <th>Tagihan</th>
-                        <th>Bayar</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'final_amount', 'label' => 'Tagihan'])
+                        @include('partials.datatable-th', ['field' => 'payment_status', 'label' => 'Bayar'])
+                        @include('partials.datatable-th', ['field' => 'status', 'label' => 'Status'])
                         <th class="text-center" style="width: 200px;">Alur Status</th>
                     </tr>
                 </thead>

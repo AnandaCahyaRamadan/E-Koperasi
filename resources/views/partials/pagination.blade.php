@@ -1,7 +1,15 @@
-@if ($paginator->hasPages())
+@php
+    $hasTotal = method_exists($paginator, 'total');
+    $shouldShow = $hasTotal ? $paginator->total() > 0 : $paginator->hasPages();
+@endphp
+@if ($shouldShow)
     <nav class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 py-3 w-100 border-top mt-3" aria-label="Navigasi Halaman">
         <div class="small text-muted text-center text-md-start">
-            Menampilkan <span class="fw-bold text-dark">{{ $paginator->firstItem() ?? 0 }}</span> sampai <span class="fw-bold text-dark">{{ $paginator->lastItem() ?? 0 }}</span> dari total <span class="fw-bold text-dark">{{ $paginator->total() }}</span> data
+            @if ($hasTotal)
+                Menampilkan <span class="fw-bold text-dark">{{ $paginator->firstItem() ?? 0 }}</span> sampai <span class="fw-bold text-dark">{{ $paginator->lastItem() ?? 0 }}</span> dari total <span class="fw-bold text-dark">{{ $paginator->total() }}</span> data
+            @else
+                Halaman <span class="fw-bold text-dark">{{ $paginator->currentPage() }}</span>
+            @endif
         </div>
 
         <ul class="pagination pagination-sm mb-0 gap-1 flex-wrap justify-content-center align-items-center">

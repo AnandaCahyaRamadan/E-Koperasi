@@ -4,16 +4,18 @@ namespace App\Livewire\Petugas;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Payment;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentVerification extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
+    public $search = '';
     public $filterMethod = 'all'; // 'all', 'qris', 'cash'
     public $filterStatus = 'waiting_verification'; // 'waiting_verification', 'paid', 'rejected', 'all'
     public $selectedPayment = null;
@@ -21,6 +23,9 @@ class PaymentVerification extends Component
     public $showRejectModal = false;
     public $showImageModal = false;
     public $previewImageUrl = null;
+
+    public function updatingFilterMethod() { $this->resetPage(); }
+    public function updatingFilterStatus() { $this->resetPage(); }
 
     public function approvePayment($paymentId)
     {
@@ -118,7 +123,7 @@ class PaymentVerification extends Component
 
     public function render()
     {
-        $query = Payment::with(['order.user', 'verifier'])->latest();
+        $query = Payment::with(['order.user', 'verifier']);
 
         if ($this->filterStatus !== 'all') {
             $query->where('status', $this->filterStatus);
@@ -128,7 +133,16 @@ class PaymentVerification extends Component
             $query->where('payment_method', $this->filterMethod);
         }
 
-        $payments = $query->paginate(10);
+        if (!empty($this->search)) {
+            $query->whereHas('order', function ($o) {
+                $o->where('order_number', 'like', "%{$this->search}%")
+                  ->orWhereHas('user', fn($u) => $u->where('name', 'like', "%{$this->search}%"));
+            });
+        }
+
+        $this->applySorting($query, ['created_at', 'payment_method', 'amount', 'status']);
+
+        $payments = $query->paginate($this->perPage);
 
         return view('livewire.petugas.payment-verification', [
             'payments' => $payments,

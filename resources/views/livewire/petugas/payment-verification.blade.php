@@ -41,16 +41,18 @@
 
     <!-- Payments Table -->
     <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        @include('partials.datatable-top', ['placeholder' => 'Cari No. Pesanan atau Pelanggan...'])
+
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>No. Pesanan</th>
+                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'No. Pesanan'])
                         <th>Pelanggan</th>
-                        <th>Metode</th>
-                        <th>Nominal</th>
+                        @include('partials.datatable-th', ['field' => 'payment_method', 'label' => 'Metode'])
+                        @include('partials.datatable-th', ['field' => 'amount', 'label' => 'Nominal'])
                         <th>Bukti Bayar (QRIS)</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'status', 'label' => 'Status'])
                         <th>Verifikator</th>
                         <th class="text-center" style="width: 170px;">Tindakan</th>
                     </tr>

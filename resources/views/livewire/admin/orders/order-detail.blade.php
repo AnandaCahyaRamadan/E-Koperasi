@@ -26,7 +26,7 @@
                 <h6 class="fw-bold text-dark mb-3"><i class="bi bi-basket2 text-kop-primary me-2"></i>Rincian Barang yang Dipesan</h6>
 
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover table-striped align-middle mb-0 datatable">
                         <thead class="table-light small text-muted">
                             <tr>
                                 <th>Produk</th>

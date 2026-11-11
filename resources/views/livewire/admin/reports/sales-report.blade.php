@@ -66,10 +66,10 @@
     </div>
 
     <!-- Top Selling Products -->
-    <div class="card card-custom border-0 p-4 shadow-sm bg-white mb-4">
+    <div class="card card-custom border-0 p-4 shadow-sm bg-white mb-4" style="border-radius: 16px;">
         <h6 class="fw-bold text-dark mb-3"><i class="bi bi-fire text-danger me-2"></i>Produk Paling Banyak Terjual (Terlaris)</h6>
         <div class="table-responsive">
-            <table class="table table-sm table-hover align-middle mb-0">
+            <table class="table table-sm table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th style="width: 40px;" class="text-center">#</th>
@@ -81,7 +81,7 @@
                 <tbody class="small">
                     @forelse($topProducts as $idx => $tp)
                         <tr>
-                            <td class="text-center fw-bold">{{ $idx + 1 }}</td>
+                            <td class="text-center fw-bold">{{ ($topProducts->currentPage() - 1) * $topProducts->perPage() + $idx + 1 }}</td>
                             <td class="fw-semibold text-dark">{{ $tp->product_name }}</td>
                             <td class="text-center"><span class="badge bg-kop-light text-kop-primary fs-6">{{ $tp->total_qty }} unit</span></td>
                             <td class="text-end fw-bold text-kop-primary">Rp {{ number_format($tp->total_sales, 0, ',', '.') }}</td>
@@ -94,20 +94,24 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-2">
+            {{ $topProducts->links('partials.pagination') }}
+        </div>
     </div>
 
     <!-- Transactions Breakdown Table -->
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        @include('partials.datatable-top', ['placeholder' => 'Cari No. Pesanan atau Pelanggan...'])
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>No. Pesanan</th>
-                        <th>Tanggal</th>
+                        @include('partials.datatable-th', ['field' => 'order_number', 'label' => 'No. Pesanan'])
+                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'Tanggal'])
                         <th>Pelanggan</th>
-                        <th>Layanan</th>
-                        <th>Metode Bayar</th>
-                        <th class="text-end">Nominal Tagihan</th>
+                        @include('partials.datatable-th', ['field' => 'order_type', 'label' => 'Layanan'])
+                        @include('partials.datatable-th', ['field' => 'payment_method', 'label' => 'Metode Bayar'])
+                        @include('partials.datatable-th', ['field' => 'final_amount', 'label' => 'Nominal Tagihan', 'align' => 'end'])
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -131,8 +135,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $orders->links() }}
+        <div class="mt-3">
+            {{ $orders->links('partials.pagination') }}
         </div>
     </div>
 </div>

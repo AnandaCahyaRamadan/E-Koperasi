@@ -45,10 +45,10 @@
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Simbol / Singkatan</th>
-                        <th>Nama Lengkap Satuan</th>
+                        @include('partials.datatable-th', ['field' => 'symbol', 'label' => 'Simbol / Singkatan'])
+                        @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Lengkap Satuan'])
                         <th>Keterangan</th>
-                        <th>Digunakan Oleh</th>
+                        @include('partials.datatable-th', ['field' => 'products_count', 'label' => 'Digunakan Oleh'])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>

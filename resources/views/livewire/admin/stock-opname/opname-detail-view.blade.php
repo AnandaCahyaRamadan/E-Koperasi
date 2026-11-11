@@ -66,26 +66,28 @@
     @endif
 
     <!-- Opname Details Table -->
-    <div class="card card-custom border-0 p-4 shadow-sm bg-white mb-4">
+    <div class="card card-custom border-0 p-4 shadow-sm bg-white mb-4" style="border-radius: 16px;">
         <h6 class="fw-bold text-dark mb-3"><i class="bi bi-list-check text-kop-primary me-2"></i>Daftar Pemeriksaan Fisik</h6>
 
+        @include('partials.datatable-top', ['placeholder' => 'Cari kode atau nama produk...'])
+
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
                         <th>No</th>
                         <th>Kode/SKU</th>
                         <th>Nama Produk</th>
-                        <th class="text-center">Stok Sistem (Awal)</th>
-                        <th class="text-center">Stok Fisik Nyata</th>
-                        <th class="text-center">Selisih</th>
+                        @include('partials.datatable-th', ['field' => 'system_stock', 'label' => 'Stok Sistem (Awal)', 'align' => 'center'])
+                        @include('partials.datatable-th', ['field' => 'physical_stock', 'label' => 'Stok Fisik Nyata', 'align' => 'center'])
+                        @include('partials.datatable-th', ['field' => 'difference', 'label' => 'Selisih', 'align' => 'center'])
                         <th>Catatan Selisih</th>
                     </tr>
                 </thead>
                 <tbody class="small">
-                    @foreach($opname->details as $index => $det)
+                    @forelse($details as $index => $det)
                         <tr>
-                            <td class="text-muted">{{ $index + 1 }}</td>
+                            <td class="text-muted">{{ ($details->currentPage() - 1) * $details->perPage() + $index + 1 }}</td>
                             <td class="fw-bold text-muted">{{ $det->product?->code }}</td>
                             <td>
                                 <div class="fw-semibold text-dark">{{ $det->product?->name }}</div>
@@ -98,9 +100,17 @@
                             </td>
                             <td class="text-muted">{{ $det->notes ?: '-' }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">Tidak ada item pemeriksaan yang cocok.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-3">
+            {{ $details->links('partials.pagination') }}
         </div>
     </div>
 </div>

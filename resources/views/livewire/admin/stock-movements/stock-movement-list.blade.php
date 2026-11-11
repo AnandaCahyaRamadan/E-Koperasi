@@ -7,43 +7,52 @@
         </div>
     </div>
 
-    <!-- Filter Card -->
-    <div class="card card-custom border-0 p-3 mb-4 shadow-sm bg-white" style="border-radius: 16px;">
-        <div class="row g-2 align-items-center">
-            <div class="col-md-5">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted ps-3"><i class="bi bi-search text-kop-primary"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="searchProduct" class="form-control border-start-0 ps-2" placeholder="Cari nama atau kode produk...">
-                    @if($searchProduct)
-                        <button class="btn btn-link text-muted pe-3 text-decoration-none" wire:click="$set('searchProduct', '')">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </button>
-                    @endif
+    <!-- Table Card -->
+    <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        <div class="row align-items-center mb-3 g-2">
+            <div class="col-sm-4 col-md-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted fw-semibold text-nowrap">Tampilkan</span>
+                    <select wire:model.live="perPage" class="form-select form-select-sm w-auto">
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="small text-muted fw-semibold text-nowrap">baris</span>
                 </div>
             </div>
-            <div class="col-md-7 text-md-end">
-                <div class="d-inline-flex gap-1 flex-wrap">
-                    <button type="button" wire:click="$set('filterType', 'all')" class="cat-pill {{ $filterType === 'all' ? 'active' : '' }}">Semua Tipe</button>
-                    <button type="button" wire:click="$set('filterType', 'in')" class="cat-pill {{ $filterType === 'in' ? 'active' : '' }}"><i class="bi bi-box-arrow-in-down"></i> Masuk</button>
-                    <button type="button" wire:click="$set('filterType', 'out')" class="cat-pill {{ $filterType === 'out' ? 'active' : '' }}"><i class="bi bi-box-arrow-up"></i> Keluar</button>
-                    <button type="button" wire:click="$set('filterType', 'adjustment')" class="cat-pill {{ $filterType === 'adjustment' ? 'active' : '' }}"><i class="bi bi-sliders"></i> Penyesuaian</button>
+            <div class="col-sm-8 col-md-9">
+                <div class="d-flex align-items-center justify-content-sm-end gap-2 flex-wrap">
+                    <div class="d-inline-flex gap-1 flex-wrap">
+                        <button type="button" wire:click="$set('filterType', 'all')" class="cat-pill {{ $filterType === 'all' ? 'active' : '' }}">Semua Tipe</button>
+                        <button type="button" wire:click="$set('filterType', 'in')" class="cat-pill {{ $filterType === 'in' ? 'active' : '' }}"><i class="bi bi-box-arrow-in-down"></i> Masuk</button>
+                        <button type="button" wire:click="$set('filterType', 'out')" class="cat-pill {{ $filterType === 'out' ? 'active' : '' }}"><i class="bi bi-box-arrow-up"></i> Keluar</button>
+                        <button type="button" wire:click="$set('filterType', 'adjustment')" class="cat-pill {{ $filterType === 'adjustment' ? 'active' : '' }}"><i class="bi bi-sliders"></i> Penyesuaian</button>
+                    </div>
+                    <div class="input-group input-group-sm" style="max-width: 240px;">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="searchProduct" class="form-control bg-light border-start-0" placeholder="Cari produk atau SKU...">
+                        @if($searchProduct)
+                            <button type="button" class="btn btn-light border border-start-0 text-muted" wire:click="$set('searchProduct', '')">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Table -->
-    <div class="card card-custom border-0 p-3 shadow-sm bg-white">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Waktu</th>
+                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'Waktu'])
                         <th>Produk</th>
-                        <th>Tipe Pergerakan</th>
-                        <th>Kategori Alasan</th>
-                        <th class="text-center">Perubahan Kuantitas</th>
-                        <th class="text-center">Stok Awal &rarr; Akhir</th>
+                        @include('partials.datatable-th', ['field' => 'type', 'label' => 'Tipe Pergerakan'])
+                        @include('partials.datatable-th', ['field' => 'reference_type', 'label' => 'Kategori Alasan'])
+                        @include('partials.datatable-th', ['field' => 'quantity', 'label' => 'Perubahan Kuantitas', 'align' => 'center'])
+                        @include('partials.datatable-th', ['field' => 'stock_after', 'label' => 'Stok Awal → Akhir', 'align' => 'center'])
                         <th>Keterangan</th>
                         <th>User Pelaksana</th>
                     </tr>
@@ -91,8 +100,8 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            {{ $movements->links() }}
+        <div class="mt-3">
+            {{ $movements->links('partials.pagination') }}
         </div>
     </div>
 </div>

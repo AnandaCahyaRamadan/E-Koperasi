@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Users;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -11,12 +12,17 @@ use Illuminate\Validation\Rule;
 
 class UserList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
     public $filterRole = 'all';
+
+    public function updatingFilterRole()
+    {
+        $this->resetPage();
+    }
 
     public $userId;
     public $role_id;
@@ -122,7 +128,7 @@ class UserList extends Component
     {
         $roles = Role::all();
 
-        $query = User::with('role')->latest();
+        $query = User::with('role');
 
         if ($this->filterRole !== 'all') {
             $query->where('role_id', $this->filterRole);
@@ -136,7 +142,9 @@ class UserList extends Component
             });
         }
 
-        $users = $query->paginate(10);
+        $this->applySorting($query, ['name', 'email', 'employee_id', 'is_active', 'created_at']);
+
+        $users = $query->paginate($this->perPage);
 
         return view('livewire.admin.users.user-list', [
             'users' => $users,

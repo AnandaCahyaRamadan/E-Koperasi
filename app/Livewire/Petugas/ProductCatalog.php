@@ -4,17 +4,29 @@ namespace App\Livewire\Petugas;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Product;
 use App\Models\Category;
 
 class ProductCatalog extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
     public $selectedCategory = '';
+
+    public function mount()
+    {
+        $this->sortField = 'name';
+        $this->sortDirection = 'asc';
+    }
+
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -30,7 +42,9 @@ class ProductCatalog extends Component
             $query->search($this->search);
         }
 
-        $products = $query->orderBy('name')->paginate(12);
+        $this->applySorting($query, ['code', 'name', 'sell_price', 'stock'], 'name', 'asc');
+
+        $products = $query->paginate($this->perPage);
 
         return view('livewire.petugas.product-catalog', [
             'categories' => $categories,

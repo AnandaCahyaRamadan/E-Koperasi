@@ -4,18 +4,25 @@ namespace App\Livewire\Admin\Payments;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentIndex extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
 
     protected $paginationTheme = 'bootstrap';
 
+    public $search = '';
     public $filterStatus = 'all';
     public $previewImageUrl = null;
     public $showImageModal = false;
+
+    public function updatingFilterStatus()
+    {
+        $this->resetPage();
+    }
 
     public function approvePayment($paymentId)
     {
@@ -57,13 +64,22 @@ class PaymentIndex extends Component
 
     public function render()
     {
-        $query = Payment::with(['order.user', 'verifier'])->latest();
+        $query = Payment::with(['order.user', 'verifier']);
 
         if ($this->filterStatus !== 'all') {
             $query->where('status', $this->filterStatus);
         }
 
-        $payments = $query->paginate(12);
+        if (!empty($this->search)) {
+            $query->whereHas('order', function ($o) {
+                $o->where('order_number', 'like', "%{$this->search}%")
+                  ->orWhereHas('user', fn($u) => $u->where('name', 'like', "%{$this->search}%"));
+            });
+        }
+
+        $this->applySorting($query, ['created_at', 'payment_method', 'amount', 'status']);
+
+        $payments = $query->paginate($this->perPage);
 
         return view('livewire.admin.payments.payment-index', [
             'payments' => $payments,

@@ -48,21 +48,32 @@
 
     <!-- Table -->
     <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
-            <div class="d-flex flex-column flex-sm-row gap-2" style="max-width: 500px; width: 100%;">
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari nama atau kode produk...">
+        <div class="row align-items-center mb-3 g-2">
+            <div class="col-sm-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted fw-semibold text-nowrap">Tampilkan</span>
+                    <select wire:model.live="perPage" class="form-select form-select-sm w-auto">
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="small text-muted fw-semibold text-nowrap">baris</span>
                 </div>
-                <select wire:model.live="category_id" class="form-select bg-light" style="max-width: 180px;">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
             </div>
-            <div class="text-muted small">
-                Menampilkan <span class="fw-bold text-dark">{{ $products->total() }}</span> produk
+            <div class="col-sm-8">
+                <div class="d-flex flex-column flex-sm-row gap-2 justify-content-sm-end">
+                    <select wire:model.live="category_id" class="form-select form-select-sm bg-light w-auto">
+                        <option value="">Semua Kategori</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="input-group input-group-sm" style="max-width: 260px;">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari nama atau kode produk...">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -70,12 +81,12 @@
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama Produk</th>
+                        @include('partials.datatable-th', ['field' => 'code', 'label' => 'Kode'])
+                        @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Produk'])
                         <th>Kategori</th>
-                        <th class="text-end">Harga Beli</th>
-                        <th class="text-end">Harga Jual</th>
-                        <th class="text-center">Sisa Stok</th>
+                        @include('partials.datatable-th', ['field' => 'purchase_price', 'label' => 'Harga Beli', 'align' => 'end'])
+                        @include('partials.datatable-th', ['field' => 'sell_price', 'label' => 'Harga Jual', 'align' => 'end'])
+                        @include('partials.datatable-th', ['field' => 'stock', 'label' => 'Sisa Stok', 'align' => 'center'])
                         <th class="text-end">Subtotal HPP</th>
                         <th class="text-end">Subtotal Nilai Jual</th>
                         <th class="text-end">Potensi Margin</th>

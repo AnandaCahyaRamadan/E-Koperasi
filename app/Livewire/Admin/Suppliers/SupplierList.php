@@ -4,15 +4,15 @@ namespace App\Livewire\Admin\Suppliers;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Supplier;
 
 class SupplierList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
-    public $perPage = 10;
     public $supplierId;
     public $name = '';
     public $code = '';
@@ -22,11 +22,6 @@ class SupplierList extends Component
     public $address = '';
     public $is_active = true;
     public $showModal = false;
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
 
     public function openCreateModal()
     {
@@ -105,7 +100,7 @@ class SupplierList extends Component
 
     public function render()
     {
-        $suppliers = Supplier::withCount('purchases')
+        $query = Supplier::withCount('purchases')
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
                     $sub->where('name', 'like', '%' . $this->search . '%')
@@ -114,9 +109,10 @@ class SupplierList extends Component
                         ->orWhere('phone', 'like', '%' . $this->search . '%')
                         ->orWhere('email', 'like', '%' . $this->search . '%');
                 });
-            })
-            ->latest()
-            ->paginate($this->perPage);
+            });
+
+        $this->applySorting($query, ['code', 'name', 'contact_person', 'purchases_count', 'created_at']);
+        $suppliers = $query->paginate($this->perPage);
 
         return view('livewire.admin.suppliers.supplier-list', [
             'suppliers' => $suppliers,

@@ -45,13 +45,13 @@
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama Supplier</th>
-                        <th>Kontak Person</th>
+                        @include('partials.datatable-th', ['field' => 'code', 'label' => 'Kode'])
+                        @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Supplier'])
+                        @include('partials.datatable-th', ['field' => 'contact_person', 'label' => 'Kontak Person'])
                         <th>No. Telepon / WA</th>
                         <th>Email</th>
                         <th>Alamat</th>
-                        <th>Riwayat PO</th>
+                        @include('partials.datatable-th', ['field' => 'purchases_count', 'label' => 'Riwayat PO'])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>

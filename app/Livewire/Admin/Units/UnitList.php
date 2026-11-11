@@ -4,24 +4,25 @@ namespace App\Livewire\Admin\Units;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Unit;
 
 class UnitList extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
-    public $perPage = 10;
     public $unitId;
     public $name = '';
     public $symbol = '';
     public $description = '';
     public $showModal = false;
 
-    public function updatingSearch()
+    public function mount()
     {
-        $this->resetPage();
+        $this->sortField = 'name';
+        $this->sortDirection = 'asc';
     }
 
     public function openCreateModal()
@@ -87,16 +88,17 @@ class UnitList extends Component
 
     public function render()
     {
-        $units = Unit::withCount('products')
+        $query = Unit::withCount('products')
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
                     $sub->where('name', 'like', '%' . $this->search . '%')
                         ->orWhere('symbol', 'like', '%' . $this->search . '%')
                         ->orWhere('description', 'like', '%' . $this->search . '%');
                 });
-            })
-            ->orderBy('name')
-            ->paginate($this->perPage);
+            });
+
+        $this->applySorting($query, ['symbol', 'name', 'products_count'], 'name', 'asc');
+        $units = $query->paginate($this->perPage);
 
         return view('livewire.admin.units.unit-list', [
             'units' => $units,

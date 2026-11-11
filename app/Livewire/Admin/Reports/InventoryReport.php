@@ -4,16 +4,24 @@ namespace App\Livewire\Admin\Reports;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithDataTable;
 use App\Models\Product;
 use App\Models\Category;
 
 class InventoryReport extends Component
 {
-    use WithPagination;
+    use WithPagination, WithDataTable;
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
     public $category_id = '';
+
+    public function mount()
+    {
+        $this->perPage = 15;
+        $this->sortField = 'name';
+        $this->sortDirection = 'asc';
+    }
 
     public function updatingSearch()
     {
@@ -45,7 +53,8 @@ class InventoryReport extends Component
         $totalSellValue = $allMatching->sum(fn($p) => $p->stock * $p->sell_price);
         $potentialProfit = $totalSellValue - $totalHppValue;
 
-        $products = $query->orderBy('name')->paginate(15);
+        $this->applySorting($query, ['code', 'name', 'stock', 'purchase_price', 'sell_price'], 'name', 'asc');
+        $products = $query->paginate($this->perPage);
         $categories = Category::orderBy('name')->get();
 
         return view('livewire.admin.reports.inventory-report', [

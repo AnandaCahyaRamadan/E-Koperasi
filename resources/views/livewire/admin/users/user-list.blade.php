@@ -39,16 +39,18 @@
 
     <!-- Users Table -->
     <div class="card card-custom border-0 p-3 shadow-sm bg-white" style="border-radius: 16px;">
+        @include('partials.datatable-top', ['showSearch' => false])
+
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        <th>Nama Pengguna</th>
+                        @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Pengguna'])
                         <th>Role Akses</th>
-                        <th>Email Akun</th>
-                        <th>NIP / ID Pegawai</th>
+                        @include('partials.datatable-th', ['field' => 'email', 'label' => 'Email Akun'])
+                        @include('partials.datatable-th', ['field' => 'employee_id', 'label' => 'NIP / ID Pegawai'])
                         <th>No. Telepon / WA</th>
-                        <th>Status</th>
+                        @include('partials.datatable-th', ['field' => 'is_active', 'label' => 'Status'])
                         <th class="text-center" style="width: 130px;">Aksi</th>
                     </tr>
                 </thead>
