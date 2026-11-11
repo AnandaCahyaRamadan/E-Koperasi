@@ -34,5 +34,15 @@ class Cart extends Model
     {
         return $this->items->sum('quantity');
     }
+
+    public static function countForUser(?int $userId = null): int
+    {
+        $uid = $userId ?? auth()->id();
+        if (!$uid) {
+            return 0;
+        }
+
+        return (int) CartItem::whereHas('cart', fn ($q) => $q->where('user_id', $uid))->sum('quantity');
+    }
 }
 

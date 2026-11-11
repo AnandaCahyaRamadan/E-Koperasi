@@ -65,7 +65,7 @@
                 <h6 class="fw-bold text-dark mb-3"><i class="bi bi-basket2 text-kop-primary me-2"></i>Rincian Barang Dipesan</h6>
                 
                 <div class="table-responsive">
-                    <table class="table table-hover table-striped align-middle mb-0 datatable">
+                    <table class="table table-hover align-middle mb-0">
                         <thead class="table-light small text-muted">
                             <tr>
                                 <th>Produk</th>
@@ -164,10 +164,10 @@
                 <h6 class="fw-bold text-dark mb-3"><i class="bi bi-journal-check text-kop-primary me-2"></i>Riwayat Audit Status</h6>
                 <div style="max-height: 250px; overflow-y: auto;">
                     @forelse($order->statusHistories as $hist)
-                        <div class="border-start border-success border-2 ps-2 mb-2">
-                            <div class="fw-semibold small text-dark">{{ $hist->status }}</div>
-                            <div class="text-muted" style="font-size: 0.72rem;">{{ $hist->notes }}</div>
-                            <div class="text-muted" style="font-size: 0.65rem;">{{ $hist->created_at->format('d/m/Y H:i:s') }}</div>
+                        <div class="border-start border-success border-2 ps-3 @if(!$loop->last) pb-2 mb-2 @endif">
+                            <span class="badge {{ $hist->status_badge_class }} mb-1" style="font-size: 0.72rem;">{{ $hist->status_label }}</span>
+                            <div class="text-muted" style="font-size: 0.76rem;">{{ $hist->notes }}</div>
+                            <div class="text-muted" style="font-size: 0.68rem;">{{ $hist->created_at->format('d M Y, H:i') }}</div>
                         </div>
                     @empty
                         <small class="text-muted">Belum ada riwayat audit.</small>

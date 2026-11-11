@@ -254,15 +254,15 @@
 
         <!-- Order Items Column -->
         <div class="col-lg-6">
-            <div class="card card-custom border-0 p-4 shadow-sm">
+            <div class="card card-custom p-4 bg-white">
                 <h6 class="fw-bold text-dark mb-3"><i class="bi bi-bag-check text-kop-primary me-2"></i>Daftar Barang Belanja</h6>
 
                 <div class="table-responsive mb-3">
-                    <table class="table table-sm table-hover table-striped align-middle mb-0 datatable">
-                        <thead class="table-light">
-                            <tr class="text-muted small">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
                                 <th>Produk</th>
-                                <th class="text-center">Kuantitas</th>
+                                <th class="text-center">Qty</th>
                                 <th class="text-end">Harga</th>
                                 <th class="text-end">Subtotal</th>
                             </tr>
@@ -271,42 +271,45 @@
                             @foreach($order->items as $item)
                                 <tr>
                                     <td>
-                                        <h6 class="fw-bold text-dark mb-0 small">{{ $item->product_name }}</h6>
+                                        <div class="fw-semibold text-dark">{{ $item->product_name }}</div>
                                         <small class="text-muted">{{ $item->product_code }}</small>
                                     </td>
-                                    <td class="text-center fw-semibold small">{{ $item->quantity }}</td>
-                                    <td class="text-end small">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                                    <td class="text-end fw-bold text-kop-primary small">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                                    <td class="text-center fw-semibold">{{ $item->quantity }}</td>
+                                    <td class="text-end text-muted">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                    <td class="text-end fw-bold text-kop-primary">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot class="border-top">
+                        <tfoot style="background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
                             <tr>
-                                <th colspan="3" class="text-end small text-muted">Total Pembayaran:</th>
-                                <th class="text-end fw-bold text-kop-primary fs-6">Rp {{ number_format($order->final_amount, 0, ',', '.') }}</th>
+                                <td colspan="3" class="text-end fw-semibold text-muted py-2">Total Pembayaran</td>
+                                <td class="text-end fw-bold text-kop-primary py-2" style="font-size: 0.95rem;">Rp {{ number_format($order->final_amount, 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
 
                 @if($order->notes)
-                    <div class="bg-light rounded p-2 small mb-3">
-                        <span class="text-muted">Catatan Pelanggan:</span>
+                    <div class="border rounded p-3 small mb-3" style="background-color: #f9fafb;">
+                        <span class="text-muted d-block mb-1" style="font-size: 0.75rem;">Catatan Pelanggan</span>
                         <div class="fw-semibold text-dark">{{ $order->notes }}</div>
                     </div>
                 @endif
 
-                <!-- Audit History Stepper -->
+                <!-- Audit History Timeline -->
                 <h6 class="fw-bold text-dark mb-2 small"><i class="bi bi-journal-text me-1 text-kop-primary"></i>Riwayat Status Transaksi</h6>
-                <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
+                <div class="border rounded p-3 bg-white" style="max-height: 240px; overflow-y: auto;">
                     @forelse($order->statusHistories as $history)
-                        <div class="d-flex align-items-start gap-2 mb-2 pb-2 border-bottom border-secondary-subtle">
-                            <i class="bi bi-dot fs-4 text-kop-primary leading-none"></i>
-                            <div class="small">
-                                <div class="fw-semibold text-dark">{{ $history->status }}</div>
-                                <div class="text-muted" style="font-size: 0.72rem;">{{ $history->notes }}</div>
-                                <div class="text-muted" style="font-size: 0.65rem;">{{ $history->created_at->format('d/m/Y H:i:s') }}</div>
+                        <div class="border-start border-2 border-success ps-3 @if(!$loop->last) pb-3 @endif">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mb-1">
+                                <span class="badge {{ $history->status_badge_class }}" style="font-size: 0.72rem; font-weight: 500; border-radius: 6px; padding: 0.3em 0.6em;">
+                                    {{ $history->status_label }}
+                                </span>
+                                <span class="text-muted" style="font-size: 0.7rem; font-variant-numeric: tabular-nums;">
+                                    {{ $history->created_at->format('d M Y, H:i') }}
+                                </span>
                             </div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">{{ $history->notes }}</div>
                         </div>
                     @empty
                         <small class="text-muted">Belum ada catatan riwayat perubahan status.</small>

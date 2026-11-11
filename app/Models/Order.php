@@ -87,14 +87,14 @@ class Order extends Model
     public function getStatusBadgeClassAttribute(): string
     {
         return match($this->status) {
-            'pending_payment' => 'bg-warning text-dark',
-            'confirmed' => 'bg-info text-dark',
-            'processing' => 'bg-primary text-white',
-            'ready_for_pickup' => 'bg-teal text-white',
-            'on_delivery' => 'bg-indigo text-white',
-            'completed' => 'bg-success text-white',
-            'cancelled' => 'bg-danger text-white',
-            default => 'bg-secondary text-white',
+            'pending_payment' => 'bg-warning-subtle text-warning-emphasis border border-warning-subtle',
+            'confirmed' => 'bg-info-subtle text-info-emphasis border border-info-subtle',
+            'processing' => 'bg-primary-subtle text-primary-emphasis border border-primary-subtle',
+            'ready_for_pickup' => 'bg-success-subtle text-success border border-success-subtle',
+            'on_delivery' => 'bg-primary-subtle text-primary border border-primary-subtle',
+            'completed' => 'bg-success-subtle text-success border border-success-subtle',
+            'cancelled' => 'bg-danger-subtle text-danger border border-danger-subtle',
+            default => 'bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle',
         };
     }
 
@@ -114,13 +114,13 @@ class Order extends Model
     public function getPaymentStatusBadgeClassAttribute(): string
     {
         return match($this->payment_status) {
-            'pending' => 'bg-secondary text-white',
-            'waiting_verification' => 'bg-warning text-dark',
-            'paid' => 'bg-success text-white',
-            'rejected' => 'bg-danger text-white',
-            'failed' => 'bg-dark text-white',
-            'refunded' => 'bg-info text-dark',
-            default => 'bg-secondary text-white',
+            'pending' => 'bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle',
+            'waiting_verification' => 'bg-warning-subtle text-warning-emphasis border border-warning-subtle',
+            'paid' => 'bg-success-subtle text-success border border-success-subtle',
+            'rejected' => 'bg-danger-subtle text-danger border border-danger-subtle',
+            'failed' => 'bg-danger-subtle text-danger border border-danger-subtle',
+            'refunded' => 'bg-info-subtle text-info-emphasis border border-info-subtle',
+            default => 'bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle',
         };
     }
 

@@ -14,7 +14,7 @@
         @if($activeField === $field)
             <i class="bi bi-arrow-{{ $activeDirection === 'asc' ? 'up' : 'down' }} text-kop-primary fw-bold"></i>
         @else
-            <i class="bi bi-arrow-down-up text-muted opacity-50"></i>
+            <i class="bi bi-arrow-down-up text-muted opacity-25" style="font-size: 0.7rem;"></i>
         @endif
     </div>
 </th>

@@ -14,6 +14,12 @@ class OrderList extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $filterStatus = 'all';
+    public $search = '';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function setFilter($status)
     {
@@ -23,9 +29,16 @@ class OrderList extends Component
 
     public function render()
     {
-        $query = Order::with(['items', 'delivery'])
+        $query = Order::with(['items.product', 'delivery'])
             ->where('user_id', Auth::id())
             ->latest();
+
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('order_number', 'like', "%{$this->search}%")
+                  ->orWhereHas('items', fn ($i) => $i->where('product_name', 'like', "%{$this->search}%"));
+            });
+        }
 
         if ($this->filterStatus === 'pending_payment') {
             $query->where('status', 'pending_payment');

@@ -1,8 +1,10 @@
 <div>
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-journal-text text-kop-primary me-2"></i>Laporan Persediaan & Nilai Aset</h4>
-            <p class="text-muted small mb-0">Valuasi stok inventori koperasi, total modal berjalan, dan estimasi margin keuntungan.</p>
+            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-journal-text text-kop-primary me-2"></i>Laporan Persediaan
+                & Nilai Aset</h4>
+            <p class="text-muted small mb-0">Valuasi stok inventori koperasi, total modal berjalan, dan estimasi margin
+                keuntungan.</p>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('admin.reports.inventory.pdf') }}" class="btn btn-outline-danger btn-sm fw-semibold">
@@ -65,13 +67,15 @@
                 <div class="d-flex flex-column flex-sm-row gap-2 justify-content-sm-end">
                     <select wire:model.live="category_id" class="form-select form-select-sm bg-light w-auto">
                         <option value="">Semua Kategori</option>
-                        @foreach($categories as $cat)
+                        @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
                     <div class="input-group input-group-sm" style="max-width: 260px;">
-                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
-                        <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari nama atau kode produk...">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i
+                                class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            class="form-control bg-light border-start-0" placeholder="Cari nama atau kode produk...">
                     </div>
                 </div>
             </div>
@@ -84,9 +88,21 @@
                         @include('partials.datatable-th', ['field' => 'code', 'label' => 'Kode'])
                         @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Produk'])
                         <th>Kategori</th>
-                        @include('partials.datatable-th', ['field' => 'purchase_price', 'label' => 'Harga Beli', 'align' => 'end'])
-                        @include('partials.datatable-th', ['field' => 'sell_price', 'label' => 'Harga Jual', 'align' => 'end'])
-                        @include('partials.datatable-th', ['field' => 'stock', 'label' => 'Sisa Stok', 'align' => 'center'])
+                        @include('partials.datatable-th', [
+                            'field' => 'purchase_price',
+                            'label' => 'Harga Beli',
+                            'align' => 'end',
+                        ])
+                        @include('partials.datatable-th', [
+                            'field' => 'sell_price',
+                            'label' => 'Harga Jual',
+                            'align' => 'end',
+                        ])
+                        @include('partials.datatable-th', [
+                            'field' => 'stock',
+                            'label' => 'Sisa Stok',
+                            'align' => 'center',
+                        ])
                         <th class="text-end">Subtotal HPP</th>
                         <th class="text-end">Subtotal Nilai Jual</th>
                         <th class="text-end">Potensi Margin</th>
@@ -105,17 +121,22 @@
                                 <div class="fw-semibold text-dark">{{ $p->name }}</div>
                                 <small class="text-muted">{{ $p->unit?->symbol }}</small>
                             </td>
-                            <td><span class="badge bg-light text-dark border">{{ $p->category?->name ?? 'Umum' }}</span></td>
-                            <td class="text-end text-muted">Rp {{ number_format($p->purchase_price, 0, ',', '.') }}</td>
+                            <td><span
+                                    class="badge bg-light text-dark border">{{ $p->category?->name ?? 'Umum' }}</span>
+                            </td>
+                            <td class="text-end text-muted">Rp {{ number_format($p->purchase_price, 0, ',', '.') }}
+                            </td>
                             <td class="text-end text-dark">Rp {{ number_format($p->sell_price, 0, ',', '.') }}</td>
                             <td class="text-center fw-bold">{{ $p->stock }}</td>
                             <td class="text-end text-muted">Rp {{ number_format($subHpp, 0, ',', '.') }}</td>
-                            <td class="text-end fw-semibold text-dark">Rp {{ number_format($subSell, 0, ',', '.') }}</td>
+                            <td class="text-end fw-semibold text-dark">Rp {{ number_format($subSell, 0, ',', '.') }}
+                            </td>
                             <td class="text-end fw-bold text-success">Rp {{ number_format($margin, 0, ',', '.') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center text-muted py-5">Tidak ada data produk yang cocok.</td>
+                            <td colspan="9" class="text-center text-muted py-5">Tidak ada data produk yang cocok.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -127,4 +148,3 @@
         </div>
     </div>
 </div>
-

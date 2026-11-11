@@ -57,7 +57,7 @@ class Home extends Component
             ]);
         }
 
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: Cart::countForUser($user->id));
         $successMsg = "{$product->name} berhasil ditambahkan ke keranjang!";
         session()->flash('success', $successMsg);
         $this->dispatch('toast', ['type' => 'success', 'message' => $successMsg, 'title' => 'Keranjang']);

@@ -1,8 +1,10 @@
 <div>
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-clipboard-check text-kop-primary me-2"></i>Stok Opname (Khusus Admin)</h4>
-            <p class="text-muted small mb-0">Pencocokan berkala antara stok fisik nyata di toko dengan stok tercatat pada sistem database.</p>
+            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-clipboard-check text-kop-primary me-2"></i>Stok Opname
+                (Khusus Admin)</h4>
+            <p class="text-muted small mb-0">Pencocokan berkala antara stok fisik nyata di toko dengan stok tercatat pada
+                sistem database.</p>
         </div>
         <div>
             <a href="{{ route('admin.stock-opname.create') }}" class="btn btn-kop-primary fw-semibold">
@@ -18,13 +20,22 @@
             <table class="table table-hover table-striped align-middle mb-0 datatable-custom">
                 <thead class="table-light small text-muted">
                     <tr>
-                        @include('partials.datatable-th', ['field' => 'opname_number', 'label' => 'No. Sesi Opname'])
-                        @include('partials.datatable-th', ['field' => 'created_at', 'label' => 'Tanggal Dibuat'])
+                        @include('partials.datatable-th', [
+                            'field' => 'opname_number',
+                            'label' => 'No. Sesi Opname',
+                        ])
+                        @include('partials.datatable-th', [
+                            'field' => 'created_at',
+                            'label' => 'Tanggal Dibuat',
+                        ])
                         <th>Dibuat Oleh</th>
                         <th>Total Item Diperiksa</th>
                         @include('partials.datatable-th', ['field' => 'status', 'label' => 'Status'])
                         <th>Disetujui Oleh</th>
-                        @include('partials.datatable-th', ['field' => 'approved_at', 'label' => 'Waktu Persetujuan'])
+                        @include('partials.datatable-th', [
+                            'field' => 'approved_at',
+                            'label' => 'Waktu Persetujuan',
+                        ])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>
@@ -43,14 +54,16 @@
                             <td>{{ $op->approver?->name ?: '-' }}</td>
                             <td>{{ $op->approved_at ? $op->approved_at->format('d/m/Y H:i') : '-' }}</td>
                             <td class="text-center">
-                                <a href="{{ route('admin.stock-opname.detail', $op->id) }}" class="btn btn-outline-kop btn-sm py-0 px-2" style="font-size: 0.75rem;">
+                                <a href="{{ route('admin.stock-opname.detail', $op->id) }}"
+                                    class="btn btn-outline-kop btn-sm py-0 px-2" style="font-size: 0.75rem;">
                                     Buka Sesi <i class="bi bi-arrow-right"></i>
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-5">Belum ada sesi stok opname yang dibuat.</td>
+                            <td colspan="8" class="text-center text-muted py-5">Belum ada sesi stok opname yang
+                                dibuat.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -62,4 +75,3 @@
         </div>
     </div>
 </div>
-

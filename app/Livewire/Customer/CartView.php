@@ -21,7 +21,7 @@ class CartView extends Component
         }
 
         $item->increment('quantity');
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: Cart::countForUser());
     }
 
     public function decrementQuantity($itemId)
@@ -36,7 +36,7 @@ class CartView extends Component
             $item->delete();
         }
 
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: Cart::countForUser());
     }
 
     public function removeItem($itemId)
@@ -47,7 +47,7 @@ class CartView extends Component
 
         $name = $item->product->name;
         $item->delete();
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: Cart::countForUser());
         session()->flash('success', "{$name} dihapus dari keranjang.");
         $this->dispatch('toast', ['type' => 'info', 'message' => "{$name} dihapus dari keranjang."]);
     }
@@ -58,7 +58,7 @@ class CartView extends Component
         if ($cart) {
             $cart->items()->delete();
         }
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: 0);
         session()->flash('success', 'Keranjang berhasil dikosongkan.');
         $this->dispatch('toast', ['type' => 'warning', 'message' => 'Seluruh isi keranjang telah dikosongkan.']);
     }

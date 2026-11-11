@@ -29,10 +29,13 @@
             <div class="col-sm-6">
                 <div class="d-flex align-items-center justify-content-sm-end gap-2">
                     <div class="input-group input-group-sm" style="max-width: 260px;">
-                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
-                        <input type="text" wire:model.live.debounce.300ms="search" class="form-control bg-light border-start-0" placeholder="Cari supplier...">
-                        @if($search)
-                            <button class="btn btn-light border border-start-0 text-muted" wire:click="$set('search', '')">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i
+                                class="bi bi-search text-kop-primary"></i></span>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            class="form-control bg-light border-start-0" placeholder="Cari supplier...">
+                        @if ($search)
+                            <button class="btn btn-light border border-start-0 text-muted"
+                                wire:click="$set('search', '')">
                                 <i class="bi bi-x-circle-fill"></i>
                             </button>
                         @endif
@@ -47,11 +50,17 @@
                     <tr>
                         @include('partials.datatable-th', ['field' => 'code', 'label' => 'Kode'])
                         @include('partials.datatable-th', ['field' => 'name', 'label' => 'Nama Supplier'])
-                        @include('partials.datatable-th', ['field' => 'contact_person', 'label' => 'Kontak Person'])
+                        @include('partials.datatable-th', [
+                            'field' => 'contact_person',
+                            'label' => 'Kontak Person',
+                        ])
                         <th>No. Telepon / WA</th>
                         <th>Email</th>
                         <th>Alamat</th>
-                        @include('partials.datatable-th', ['field' => 'purchases_count', 'label' => 'Riwayat PO'])
+                        @include('partials.datatable-th', [
+                            'field' => 'purchases_count',
+                            'label' => 'Riwayat PO',
+                        ])
                         <th class="text-center" style="width: 120px;">Aksi</th>
                     </tr>
                 </thead>
@@ -65,17 +74,18 @@
                             <td>{{ $sup->email ?: '-' }}</td>
                             <td class="text-truncate" style="max-width: 200px;">{{ $sup->address ?: '-' }}</td>
                             <td>
-                                <span class="badge bg-light text-dark border">{{ $sup->purchases_count }} transaksi</span>
+                                <span class="badge bg-light text-dark border">{{ $sup->purchases_count }}
+                                    transaksi</span>
                             </td>
                             <td class="text-center">
                                 <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <button type="button" wire:click="openEditModal({{ $sup->id }})" class="btn-action-edit" title="Edit Supplier">
+                                    <button type="button" wire:click="openEditModal({{ $sup->id }})"
+                                        class="btn-action-edit" title="Edit Supplier">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <button type="button" 
-                                            wire:click="deleteSupplier({{ $sup->id }})" 
-                                            wire:confirm="Yakin ingin menghapus supplier {{ $sup->name }}?"
-                                            class="btn-action-delete" title="Hapus Supplier">
+                                    <button type="button" wire:click="deleteSupplier({{ $sup->id }})"
+                                        wire:confirm="Yakin ingin menghapus supplier {{ $sup->name }}?"
+                                        class="btn-action-delete" title="Hapus Supplier">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
@@ -83,7 +93,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-5">Belum ada pemasok yang terdaftar.</td>
+                            <td colspan="8" class="text-center text-muted py-5">Belum ada pemasok yang terdaftar.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -96,20 +107,26 @@
     </div>
 
     <!-- Modal Form -->
-    @if($showModal)
+    @if ($showModal)
         <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 card-custom">
                     <div class="modal-header border-0 pb-0">
-                        <h6 class="modal-title fw-bold text-dark">{{ $supplierId ? 'Edit Supplier' : 'Tambah Supplier Baru' }}</h6>
+                        <h6 class="modal-title fw-bold text-dark">
+                            {{ $supplierId ? 'Edit Supplier' : 'Tambah Supplier Baru' }}</h6>
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
                     <form wire:submit.prevent="save">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label small fw-semibold text-muted">Nama Perusahaan / Supplier</label>
-                                <input type="text" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Contoh: PT Sumber Pangan">
-                                @error('name') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                                <label class="form-label small fw-semibold text-muted">Nama Perusahaan /
+                                    Supplier</label>
+                                <input type="text" wire:model="name"
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    placeholder="Contoh: PT Sumber Pangan">
+                                @error('name')
+                                    <div class="invalid-feedback small">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="row g-2 mb-3">
@@ -119,18 +136,21 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label small fw-semibold text-muted">Nama Kontak Person</label>
-                                    <input type="text" wire:model="contact_person" class="form-control" placeholder="Nama sales / PIC">
+                                    <input type="text" wire:model="contact_person" class="form-control"
+                                        placeholder="Nama sales / PIC">
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-3">
                                 <div class="col-sm-6">
                                     <label class="form-label small fw-semibold text-muted">No. Telepon / WA</label>
-                                    <input type="text" wire:model="phone" class="form-control" placeholder="08123456789">
+                                    <input type="text" wire:model="phone" class="form-control"
+                                        placeholder="08123456789">
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label small fw-semibold text-muted">Email</label>
-                                    <input type="email" wire:model="email" class="form-control" placeholder="sales@supplier.com">
+                                    <input type="email" wire:model="email" class="form-control"
+                                        placeholder="sales@supplier.com">
                                 </div>
                             </div>
 
@@ -149,4 +169,3 @@
         </div>
     @endif
 </div>
-

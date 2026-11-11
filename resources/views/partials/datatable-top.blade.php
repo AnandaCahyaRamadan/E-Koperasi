@@ -20,12 +20,12 @@
     @if($showSearchBox)
         <div class="col-sm-6">
             <div class="d-flex align-items-center justify-content-sm-end gap-2">
-                <div class="input-group input-group-sm" style="max-width: 280px;">
-                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-kop-primary"></i></span>
-                    <input type="text" wire:model.live.debounce.300ms="{{ $searchProp }}" class="form-control bg-light border-start-0" placeholder="{{ $searchPlaceholder }}">
+                <div class="input-group input-group-sm" style="max-width: 260px;">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" wire:model.live.debounce.300ms="{{ $searchProp }}" class="form-control bg-white border-start-0" placeholder="{{ $searchPlaceholder }}">
                     @if(!empty($this->{$searchProp} ?? null))
-                        <button type="button" class="btn btn-light border border-start-0 text-muted" wire:click="$set('{{ $searchProp }}', '')">
-                            <i class="bi bi-x-circle-fill"></i>
+                        <button type="button" class="btn btn-white border border-start-0 text-muted" wire:click="$set('{{ $searchProp }}', '')">
+                            <i class="bi bi-x"></i>
                         </button>
                     @endif
                 </div>

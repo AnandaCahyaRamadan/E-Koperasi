@@ -90,7 +90,7 @@ class ProductCatalog extends Component
             ]);
         }
 
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', count: Cart::countForUser());
         $successMsg = "{$product->name} berhasil ditambahkan ke keranjang!";
         session()->flash('success', $successMsg);
         $this->dispatch('toast', ['type' => 'success', 'message' => $successMsg, 'title' => 'Keranjang']);
