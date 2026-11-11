@@ -1,15 +1,21 @@
 <!-- Critical Anti-FOUC Guard (Zero flash of unstyled content) -->
-<style>
+<style id="anti-fouc-style">
     [x-cloak] { display: none !important; }
-    html { visibility: visible; }
+    html {
+        visibility: visible;
+        background-color: #F4F6F8;
+    }
     body {
-        visibility: hidden;
+        visibility: hidden !important;
+        opacity: 0 !important;
         margin: 0;
         background-color: #F4F6F8;
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
     body.app-loaded {
-        visibility: visible;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transition: opacity 0.1s ease-out;
     }
     /* Anti-FOUC Sidebar & Menu Reset */
     .sidebar-menu, .sidebar-menu li, .sidebar-menu-header, .sidebar-menu-item {
@@ -19,21 +25,47 @@
 </style>
 <script>
     (function() {
+        var revealed = false;
         function show() {
-            if (document.body) {
-                document.body.classList.add('app-loaded');
-                document.body.style.visibility = 'visible';
+            if (revealed || !document.body) return;
+            revealed = true;
+            document.body.classList.add('app-loaded');
+        }
+        function allStylesLoaded() {
+            var links = document.head.querySelectorAll('link[rel="stylesheet"]');
+            for (var i = 0; i < links.length; i++) {
+                try {
+                    if (!links[i].sheet) return false;
+                } catch (e) {
+                    // Cross-origin stylesheet fallback
+                }
+            }
+            return links.length > 0;
+        }
+        function tryReveal() {
+            if (document.body && allStylesLoaded()) {
+                show();
             }
         }
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        document.addEventListener('DOMContentLoaded', tryReveal);
+        window.addEventListener('load', show);
+        document.addEventListener('livewire:navigated', function() {
+            if (document.body) {
+                document.body.classList.add('app-loaded');
+            }
+        });
+        var poll = setInterval(function() {
+            if (revealed) {
+                clearInterval(poll);
+                return;
+            }
+            tryReveal();
+        }, 30);
+        // Emergency fallback if an asset hangs
+        setTimeout(function() {
+            clearInterval(poll);
             show();
-        } else {
-            document.addEventListener('DOMContentLoaded', show);
-            window.addEventListener('load', show);
-        }
-        document.addEventListener('livewire:navigated', show);
-        // Safety timeout so page is never hidden longer than 150ms
-        setTimeout(show, 150);
+        }, 2500);
     })();
 </script>
 <noscript>

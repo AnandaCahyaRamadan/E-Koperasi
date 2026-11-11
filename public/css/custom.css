@@ -180,6 +180,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     transition: all 0.2s ease-in-out;
 }
 
+/* Preserve room for Bootstrap dropdown chevron on select controls */
+.form-select {
+    padding-right: 36px;
+}
+
 .form-control::placeholder {
     color: #94a3b8;
     font-weight: 400;
@@ -198,10 +203,22 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-size: 0.82rem;
 }
 
+.form-select-sm {
+    padding-right: 32px;
+}
+
+select[wire\:model\.live="perPage"] {
+    min-width: 74px;
+}
+
 .form-control-lg, .form-select-lg {
     border-radius: 12px;
     padding: 12px 18px;
     font-size: 1rem;
+}
+
+.form-select-lg {
+    padding-right: 40px;
 }
 
 /* Modern Input Groups */
